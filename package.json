@@ -1,0 +1,22 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "description": "API server framework",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Nicolas Chourot",
+  "license": "ISC",
+  "dependencies": {
+    "cli-color": "^2.0.3",
+    "date-and-time": "^2.4.1",
+    "image-size": "^1.0.0",
+    "nodemailer": "^6.8.0",
+    "properties-reader": "^2.1.1",
+    "query-string": "^7.1.1",
+    "sharp": "^0.31.1",
+    "uuid": "^8.3.2"
+  }
+}

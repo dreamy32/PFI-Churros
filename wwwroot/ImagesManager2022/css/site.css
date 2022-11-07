@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css?family=Titan One');
+
+body {
+    background-image: linear-gradient(45deg, rgb(255, 136, 0), rgb(0, 0, 169));
+}
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    max-width: 1450px;
+    min-width: 490px;
+    margin: auto;
+    background-color: rgb(255, 255, 255);
+    height: 100vh;
+    border: 1px solid lightgray;
+}
+#newImageCmd {
+    font-size: 45px;
+}
+.headerPanel {
+    display: flex;
+    flex-wrap: wrap;
+    background-image: linear-gradient(180deg, lightgray, gray);
+    align-items: center;
+}
+.headerLayout {
+    display: grid;
+    grid-template-columns: 80px auto 60px;
+    align-items: center;
+    font-size: 30px !important;
+    font-family: Titan One !important;
+}
+.header {
+    width: 100%;
+    font-size: 28px;
+    color: rgb(55, 55, 55);
+    text-align: left;
+}
+.connectionBar {
+    display: grid;
+    grid-template-columns: 80px auto 60px 60px;
+    align-items: center;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.scrollContainer {
+    overflow-y: scroll;
+    flex: 12;
+    border-top: 1px solid lightgray;
+}
+::-webkit-scrollbar {
+    width: 18px;
+}
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+.ImageUploader {
+    align-items: center;
+    width: 600px;
+    height: 344px;
+    /* 600 X 0,57333 ratio */
+    border: 1px solid lightgray;
+}
+.ui-dialog #avatar {
+    border: 0px solid white;
+    width: 255px !important;
+    height: 255px !important;
+    margin: auto;
+}
+#avatar_ImageContainer {
+    border-radius:500px !important;
+    background-size: cover !important;
+}
+#imagesList {
+    display: flex;
+    flex-wrap:wrap;
+    gap: 15px;
+    padding: 10px;
+}
+.favicon {
+    height: 50px;
+    width: 60px;
+    margin: 15px;
+}
+input2,
+textarea2 {
+    margin-bottom: 15px;
+}
+.note {
+    font-size: 12px;
+    color: blue;
+}
+.imageLayout {
+    flex:1;
+    min-width: 300px;
+    align-content: stretch;
+}
+.imageLayout .cmd {
+    display: none;
+}
+.imageLayout:hover .cmd {
+    display: inline-block;
+}
+.imageLayout:hover .imageHeader {
+    display: grid;
+    grid-template-columns: auto 35px 35px;
+}
+.imageTitle {
+    font-size: 20px;
+    min-height: 32px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.imageDate {
+    font-size: 14px;
+    color: gray
+}
+.imageDesciption {
+    position: relative;
+    text-align: justify;
+    margin-bottom: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid lightgray;
+}
+.image {
+    height: 220px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.cmd {
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: bold;
+    color: blue;
+    text-align: center;
+}
+.cmd:hover {
+    color: rgb(2, 166, 221);
+}
+.cmd:active {
+    color: lightblue;
+}
+label {
+    margin-top: 10px;
+    margin-bottom: 4px;
+    color: gray;
+}
+.biggerCheck {
+    scale: 1.5 1.5;
+    padding-right: 4px;
+}
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.connectedUser {
+    margin-left: auto;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.avatar {
+    border-radius: 50px;
+    width: 60px;
+    height: 60px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.avatarControl {
+    width: 200px !important;
+    height: 200px !important;
+}
+.userName {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+div2,
+span2 {
+    border: 1px solid red;
+}

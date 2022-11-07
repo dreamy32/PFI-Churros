@@ -1,0 +1,13 @@
+body{
+   background-color: rgb(134, 199, 243);
+   color:rgb(2, 71, 45);
+}
+hr {
+   border: 4px solid rgb(1, 27, 255);
+  border-radius: 4px;
+}
+.icon {
+   width: 20%;
+   float: left;
+   margin-right: 20px;
+}
