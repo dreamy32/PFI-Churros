@@ -43,8 +43,9 @@ module.exports =
             else
                 return null;
 
-            if (this.model && !(sortField in this.model))
-                return null;
+            // not friendly with extra members added dynamically
+            //if (this.model && !(sortField in this.model))
+            //    return null;
 
             descending = (parts.length > 1) && (parts[1].toLowerCase().includes('desc'));
 

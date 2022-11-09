@@ -13,9 +13,7 @@ body {
     height: 100vh;
     border: 1px solid lightgray;
 }
-#newImageCmd {
-    font-size: 45px;
-}
+
 .headerPanel {
     display: flex;
     flex-wrap: wrap;
