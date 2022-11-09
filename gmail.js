@@ -23,7 +23,7 @@ module.exports =
             })
         }
 
-        send = async (to, subject, html) => {
+        async send(to, subject, html) {
             let from = GmailAccountEmail;
             await this.transporter.sendMail({ from, to, subject, html }, function (error, info) {
                 if (error) {
