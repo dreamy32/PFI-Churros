@@ -76,6 +76,7 @@ body {
     overflow-y: scroll;
     flex: 1;
     border-top: 1px solid lightgray;
+    scroll-snap-type: y mandatory;
 }
 ::-webkit-scrollbar {
     width: 18px;
@@ -137,6 +138,7 @@ textarea2 {
     min-width:300px;
     max-width: 400px;
     align-content: stretch;
+    scroll-snap-align:start;
 }
 @media (max-width: 1980px) {
     .imageLayout {
