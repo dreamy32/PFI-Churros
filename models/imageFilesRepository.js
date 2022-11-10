@@ -26,14 +26,31 @@ module.exports =
         static getServerThumbnailFileURL(GUID) {
             return this.getServerImageFilesFolder() + "thumbnails/" + GUID + ".png";
         }
+        static writeDummyFile() {
+            let dummy = this.getServerImageFilesFolder() + "dummy.text";
+            let content = "dummy file";
+            fs.writeFileSync(dummy, content);
+        }
         static removeImageFile(GUID) {
+            let original;
+            let thumbnail;
             if (GUID != "") {
-                try {
-                    fs.unlinkSync(this.getServerImageFileURL(GUID));
-                    fs.unlinkSync(this.getServerThumbnailFileURL(GUID));
-                } catch (err) {
-                    console.log('image not found');
-                }
+                original = this.getServerImageFileURL(GUID);
+                thumbnail = this.getServerThumbnailFileURL(GUID);
+                fs.unlink(this.getServerImageFileURL(GUID), (err) => {
+                    if (err) {
+                        console.log(`Delete ${original} file failed --->`, err);
+                        //throw err;
+                    }
+                    console.log(`${original} deleted`);
+                });
+                fs.unlink(this.getServerThumbnailFileURL(GUID), (err) => {
+                    if (err) {
+                        console.log(`Delete ${original} file failed --->`, err);
+                        //throw err;
+                    }
+                    console.log(`${thumbnail} deleted`);
+                });
             }
         }
         static storeImageData(previousGUID, imageDataBase64) {
@@ -73,10 +90,11 @@ module.exports =
                 sharp(this.getServerImageFileURL(GUID))
                     .resize(newWidth, newHeight)
                     .toFile(this.getServerThumbnailFileURL(GUID))
-                    .then(() => {console.log("file resized") })
+                    .then(() => { console.log("file resized") })
                     .catch(err => {
                         console.log(err)
                     })
+                //this.writeDummyFile();
                 return GUID;
             } else
                 return previousGUID;

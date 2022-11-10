@@ -6,8 +6,6 @@ body {
 .mainContainer {
     display: flex;
     flex-direction: column;
-    max-width: 1450px;
-    min-width: 490px;
     margin: auto;
     background-color: rgb(255, 255, 255);
     height: 100vh;
@@ -24,8 +22,41 @@ body {
     display: grid;
     grid-template-columns: 80px auto 60px;
     align-items: center;
+}
+.outLinedText {
     font-size: 30px !important;
     font-family: Titan One !important;
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: black;
+    -webkit-text-fill-color: transparent;
+}
+
+.tbg-yellow {
+    -webkit-text-fill-color:rgb(237,181,7)
+}
+.tbg-orange {
+    -webkit-text-fill-color:rgb(225,120,13)
+}
+.tbg-red {
+    -webkit-text-fill-color:rgb(216,14,44)
+}
+.tbg-pink {
+    -webkit-text-fill-color:rgb(180,49,109)
+}
+.tbg-purple {
+    -webkit-text-fill-color:rgb(109,38,122)
+}
+.tbg-blue {
+    -webkit-text-fill-color:rgb(29,83,146)
+}
+.tbg-green {
+    -webkit-text-fill-color:rgb(12,144,106)
+}
+.tbg-grass {
+    -webkit-text-fill-color:rgb(91,150,51)
+}
+.tbg-black {
+    -webkit-text-fill-color: black
 }
 .header {
     width: 100%;
@@ -43,7 +74,7 @@ body {
 }
 .scrollContainer {
     overflow-y: scroll;
-    flex: 12;
+    flex: 1;
     border-top: 1px solid lightgray;
 }
 ::-webkit-scrollbar {
@@ -79,6 +110,7 @@ body {
     flex-wrap:wrap;
     gap: 15px;
     padding: 10px;
+    justify-content: space-around;
 }
 .favicon {
     height: 60px;
@@ -93,10 +125,26 @@ textarea2 {
     font-size: 12px;
     color: blue;
 }
+.image {
+    height: 220px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 .imageLayout {
     flex:1;
-    min-width: 300px;
+    width: 300px !important;
+    min-width:300px;
+    max-width: 400px;
     align-content: stretch;
+}
+@media (max-width: 1980px) {
+    .imageLayout {
+        min-width:300px;
+    }
+    .image {
+        height: 220px;
+    }
 }
 .imageLayout .cmd {
     display: none;
@@ -127,12 +175,7 @@ textarea2 {
     padding-bottom: 24px;
     border-bottom: 1px solid lightgray;
 }
-.image {
-    height: 220px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+
 .cmd {
     cursor: pointer;
     font-size: 30px;
