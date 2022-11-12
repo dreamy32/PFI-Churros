@@ -111,7 +111,7 @@ body {
     flex-wrap:wrap;
     gap: 15px;
     padding: 10px;
-    justify-content: space-around;
+    justify-content: flex-start;
 }
 .favicon {
     height: 60px;
@@ -133,7 +133,7 @@ textarea2 {
     background-repeat: no-repeat;
 }
 .imageLayout {
-    flex:1;
+    flex:auto;
     width: 300px !important;
     min-width:300px;
     max-width: 400px;
