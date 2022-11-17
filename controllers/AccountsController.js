@@ -30,6 +30,8 @@ module.exports =
                         let newToken = TokenManager.create(user);
                         this.HttpContext.response.JSON(newToken);
                     } else {
+                        delete user.Password;
+                        user.VerifyCode = "unverified";
                         this.HttpContext.response.unverifiedUser(user);
                     }
                 } else {
