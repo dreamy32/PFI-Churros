@@ -30,7 +30,7 @@ module.exports =
                         let newToken = TokenManager.create(user);
                         this.HttpContext.response.JSON(newToken);
                     } else {
-                        this.HttpContext.response.unverifiedUser();
+                        this.HttpContext.response.unverifiedUser(user);
                     }
                 } else {
                     this.HttpContext.response.wrongPassword();

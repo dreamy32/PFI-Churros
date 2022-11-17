@@ -109,8 +109,12 @@ module.exports =
             // bad request status
             this.status(400);
         }
-        unverifiedUser() {
-            this.status(480);
+        unverifiedUser(user = null) {
+            if (user) {
+                this.res.writeHead(480, { 'content-type': 'application/json' });
+                this.end(JSON.stringify(user));
+            } else
+                this.status(480);
         }
         userNotFound() {
             this.status(481);
