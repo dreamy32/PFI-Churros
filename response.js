@@ -109,12 +109,8 @@ module.exports =
             // bad request status
             this.status(400);
         }
-        unverifiedUser(token = null) {
-            if (token) {
-                this.res.writeHead(480, { 'content-type': 'application/json' });
-                this.end(JSON.stringify(token));
-            } else
-                this.status(480);
+        unverifiedUser() {
+            this.status(480);
         }
         userNotFound() {
             this.status(481);
