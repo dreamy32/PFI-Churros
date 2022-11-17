@@ -27,11 +27,7 @@ module.exports =
             if (user != null) {
                 if (user.Password == loginInfo.Password) {
                     let newToken = TokenManager.create(user);
-                    if (user.VerifyCode == 'verified') {
-                        this.HttpContext.response.JSON(newToken);
-                    } else {
-                        this.HttpContext.response.unverifiedUser(newToken);
-                    }
+                    this.HttpContext.response.JSON(newToken);
                 } else {
                     this.HttpContext.response.wrongPassword();
                 }
