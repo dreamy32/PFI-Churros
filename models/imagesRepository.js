@@ -1,7 +1,6 @@
 
- // Attention de ne pas avoir des références circulaire
- // const UsersRepository = require('./usersRepository'); pas ici sinon référence ciculaire
 const ImageFilesRepository = require('./imageFilesRepository.js');
+const UsersRepository = require('./usersRepository');
 const ImageModel = require('./image.js');
 const utilities = require("../utilities");
 const HttpContext = require('../httpContext').get();
