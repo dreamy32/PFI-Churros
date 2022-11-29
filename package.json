@@ -15,6 +15,7 @@
   "dependencies": {
     "cli-color": "^2.0.3",
     "date-and-time": "^2.4.1",
+    "get-browser-fingerprint": "^2.1.1",
     "image-size": "^1.0.0",
     "jimp": "^0.16.2",
     "nodemailer": "^6.8.0",

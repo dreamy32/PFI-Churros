@@ -9,14 +9,15 @@ body {
     margin: auto;
     background-color: rgb(255, 255, 255);
     height: 100vh;
-    border: 1px solid lightgray;
 }
 
 .headerPanel {
     display: flex;
     flex-wrap: wrap;
-    background-image: linear-gradient(180deg, lightgray, gray);
+    background: linear-gradient(220.94deg, #3D80FF 30%, #903BF5 70%);
     align-items: center;
+    justify-content: space-between;
+    border-bottom: 4px dotted black;
 }
 .headerLayout {
     display: grid;
