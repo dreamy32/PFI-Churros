@@ -25,6 +25,9 @@ module.exports =
             }
             return null;
         }
+        bindImageToUser(image, user) {
+            
+        }
         add(image) {
             if (this.model.valid(image)) {
                 image["GUID"] = ImageFilesRepository.storeImageData("", image["ImageData"]);
