@@ -107,20 +107,25 @@
             <div id="userDlg">
                 <form id="userForm">
                     <input type="hidden" id="userId_input" value="0">
-                    <input type="hidden" id="userdate_input" value="0">
                     <input type="hidden" id="userGUID_input" value="">
 
-                    <label for="title_input">Titre</label>
-                    <input type="text" id="usertitle_input" class="form-control" required>
+                    <label for="name_input">Nom d'usager</label>
+                    <input type="text" id="name_input" class="form-control" required>
 
-                    <label for="decription_input">Description</label>
-                    <textarea id="description_input" class="form-control" required></textarea>
+                    <label for="email_input">Courriel</label>
+                    <input id="email_input" class="form-control" required>
 
-                    <label for="image">Image</label>
-                    <div id='image' class='ImageUploader' defaultImage='images/No_Image.png'
+                    <label for="password_input">Mot de passe</label>
+                    <input id="password_input" class="form-control" required>
+
+                    <label for="confirmation_input">Confirmation</label>
+                    <input id="confirmation_input" class="form-control" required>
+
+                    <label for="avatar">Avatar</label>
+                    <div id='avatar' class='ImageUploader' defaultImage='images/No_Avatar.png'
                         waitingImage='images/writing.gif'>
                     </div>
-                    <div class="note">Cliquez-Déposez une image</div>
+                    <div class="note">Cliquez-Déposez votre avatar</div>
                 </form>
             </div>
         </div>
@@ -175,18 +180,18 @@
         }
 
         function getUsersList(refresh = true) {
-            appendMode = !refresh;
-            function prepareQueryString() {
-                let queryString = "";
-                if (appendMode) {
-                    queryString = `?sort=Date,desc&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
-                    imagesCount += appendCount;
-                } else {
-                    queryString = `?sort=Date,desc&offset=${0}&limit=${imagesCount}`;
-                }
-                return queryString;
-            }
-            GET_ALL(refreshimagesList, error, prepareQueryString());
+            // appendMode = !refresh;
+            // function prepareQueryString() {
+            //     let queryString = "";
+            //     if (appendMode) {
+            //         queryString = `accounts`;
+            //         //magesCount += appendCount;
+            //     } else {
+            //         queryString = `?sort=Date,desc&offset=${0}&limit=${imagesCount}`;
+            //     }
+            //     return queryString;
+            // }
+            // //GET_ALL(refreshimagesList, error, prepareQueryString());
         }
         function refreshimagesList(images, ETag) {
             function insertIntoImageList(image) {
@@ -282,9 +287,9 @@
             holdCheckETag = true;
             createMode = true;
             resetuserForm();
-            ImageUploader.imageRequired('image', true);
-            $("#userDlg").dialog('option', 'title', "Ajout d'image");
-            $("#userDlgOkBtn").text("Ajouter");
+            //ImageUploader.imageRequired('image', true);
+            $("#userDlg").dialog('option', 'title', "Création de compte");
+            $("#userDlgOkBtn").text("Créer");
             $("#userDlg").dialog('open');
         }
         function editimage(e) {
@@ -362,28 +367,28 @@
             ImageUploader.resetImage('image');
         }
         function userFromForm() {
-            if ($("#imageForm")[0].checkValidity()) {
-                let image = {
-                    Id: parseInt($("#Id_input").val()),
-                    GUID: $("#GUID_input").val(),
-                    Title: $("#title_input").val(),
-                    Description: $("#description_input").val(),
+            if ($("#userForm")[0].checkValidity()) {
+                let user = {
+                    Id: parseInt($("#userId_input").val()),
+                    Name: $("#name_input").val(),
+                    Email: $("#email_input").val(),
+                    Password: $("#password_input").val(),
+                    AvatarGUID: $("#userGUID_input").val(),
                     ImageData: ImageUploader.getImageData('image'),
                     Date: parseInt($("#date_input").val())
                 };
-                return image;
+                return user;
             } else {
-                $("#imageForm")[0].reportValidity()
+                $("#userForm")[0].reportValidity()
             }
             return false;
         }
         function userToForm(user) {
-            $("#Id_input").val(image.Id);
-            $("#GUID_input").val(image.GUID);
-            $("#date_input").val(image.Date);
-            //$("#date_input").val(Date.now());
-            $("#title_input").val(image.Title);
-            $("#description_input").val(image.Description);
+            $("#name_input").val(user.Name);
+            $("#email_input").val(user.Email);
+            $("#password_input").val(user.Password);
+            $("#avatar_input").val(user.AvatarGUID);
+
             ImageUploader.setImage('image', image.OriginalURL);
         }
 
@@ -410,7 +415,7 @@
                         let user = userFromForm();
                         if (user) {
                             if (createMode) {
-                                POST(user, getUsersList, error);
+                                POSTUSER(user, getUsersList, error);
                             }
                             else
                                 PUT(user, getUsersList, error);

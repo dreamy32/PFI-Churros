@@ -1,4 +1,5 @@
-const apiBaseURL = "http://localhost:5000/api/images";
+const apiBaseURL = "http://localhost:5000/api/images"; // remplacer quand host sur glitch
+const apiUserURL = "http://localhost:5000/accounts";
 
 function HEAD(successCallBack, errorCallBack) {
     $.ajax({
@@ -36,6 +37,18 @@ function POST(data, successCallBack, errorCallBack) {
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     });
 }
+
+function POSTUSER(data, successCallBack, errorCallBack) {
+    $.ajax({
+        url: apiUserURL + "/register",
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: (data) => { successCallBack(data) },
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    });
+}
+
 function PUT(bookmark, successCallBack, errorCallBack) {
     $.ajax({
         url: apiBaseURL + "/" + bookmark.Id,
