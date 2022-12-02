@@ -62,12 +62,13 @@
                 <button type="button" class="btn btn-primary">Modifier le profil</button>
             </div> -->
             <div class="unloggedPanel" style="margin-inline: 25px;">
-                <button type="button" class="btn btn-primary">Connexion</button>
-                <span class="btn btn-secondary" id="newUserCmd" title="Créer un compte"
-                    data-toggle="tooltip">Créer un compte</span>
+                <span class="btn btn-primary" id="loginCmd" title="Se connecter" data-toggle="tooltip">Connexion</span>
+                <span class="btn btn-secondary" id="registerCmd" title="Créer un compte" data-toggle="tooltip">Créer un
+                    compte</span>
+                <!-- <button type="button" class="btn btn-primary">Connexion</button> -->
                 <!-- <button type="button" class="btn btn-secondary">Créer un compte</button> -->
             </div>
-            
+
         </div>
 
         <div class="scrollContainer">
@@ -95,7 +96,7 @@
                     <div class="note">Cliquez-Déposez une image</div>
                 </form>
             </div>
-            
+
             <div id="confirmDeleteDlg">
                 <span id="confirmationMessage"></span>
             </div>
@@ -104,8 +105,8 @@
             </div>
         </div>
         <div>
-            <div id="userDlg">
-                <form id="userForm">
+            <div id="registerDlg">
+                <form id="registerForm">
                     <input type="hidden" id="userId_input" value="0">
                     <input type="hidden" id="userGUID_input" value="">
 
@@ -126,6 +127,23 @@
                         waitingImage='images/writing.gif'>
                     </div>
                     <div class="note">Cliquez-Déposez votre avatar</div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <div id="loginDlg">
+                <form id="loginForm">
+
+                    <label for="login-email_input">Courriel</label>
+                    <input id="login-email_input" class="form-control" required>
+
+                    <label for="login-password_input">Mot de passe</label>
+                    <input id="login-password_input" class="form-control" required>
+                    <br>
+                    <input type="checkbox" value="" id="remember-input">
+                    <label for="remember-input">Se souvenir</label>
+                    <!-- <input type="checkbox" class="form-control" id="remember_input">
+                    <label for="remember_input">Se souvenir</label> -->
                 </form>
             </div>
         </div>
@@ -153,7 +171,8 @@
         let appendMode = false;
 
         init_UI();
-        initUserDlg();
+        initRegisterDlg();
+        initLoginForm();
         HEAD(checkETag, error);
         setInterval(() => { HEAD(checkETag, error) }, periodicRefreshPeriod * 1000);
 
@@ -283,14 +302,22 @@
             $("#imageDlg").dialog('open');
         }
 
-        function newUser() {
+        function Register() {
             holdCheckETag = true;
             createMode = true;
-            resetuserForm();
+            resetRegisterForm();
             //ImageUploader.imageRequired('image', true);
-            $("#userDlg").dialog('option', 'title', "Création de compte");
-            $("#userDlgOkBtn").text("Créer");
-            $("#userDlg").dialog('open');
+            $("#registerDlg").dialog('option', 'title', "Création de compte");
+            $("#registerDlgOkBtn").text("Créer");
+            $("#registerDlg").dialog('open');
+        }
+        function Login() {
+            holdCheckETag = true;
+            createMode = false;
+            resetLoginForm();
+            $("#loginDlg").dialog('option', 'title', "Connexion");
+            $("#loginDlgOkBtn").text("Connexion");
+            $("#loginDlg").dialog('open');
         }
         function editimage(e) {
             holdCheckETag = true;
@@ -325,13 +352,16 @@
             $("#description_input").val("");
             ImageUploader.resetImage('image');
         }
-        function resetuserForm() {
+        function resetRegisterForm() {
             $("#Id_input").val("0");
             $("#GUID_input").val("");
             $("#date_input").val(Date.now());
             $("#title_input").val("");
             $("#description_input").val("");
             ImageUploader.resetImage('image');
+        }
+        function resetLoginForm() {
+            //To Define
         }
         function imageFromForm() {
             if ($("#imageForm")[0].checkValidity()) {
@@ -358,7 +388,7 @@
             $("#description_input").val(image.Description);
             ImageUploader.setImage('image', image.OriginalURL);
         }
-        function resetuserForm() {
+        function resetRegisterForm() {
             $("#Id_input").val("0");
             $("#GUID_input").val("");
             $("#date_input").val(Date.now());
@@ -367,7 +397,7 @@
             ImageUploader.resetImage('image');
         }
         function userFromForm() {
-            if ($("#userForm")[0].checkValidity()) {
+            if ($("#registerForm")[0].checkValidity()) {
                 let user = {
                     Id: parseInt($("#userId_input").val()),
                     Name: $("#name_input").val(),
@@ -379,7 +409,7 @@
                 };
                 return user;
             } else {
-                $("#userForm")[0].reportValidity()
+                $("#registerForm")[0].reportValidity()
             }
             return false;
         }
@@ -392,10 +422,9 @@
             ImageUploader.setImage('image', image.OriginalURL);
         }
 
-        function initUserDlg()
-        {
-            $("#newUserCmd").click(newUser)
-            $("#userDlg").dialog({
+        function initRegisterDlg() {
+            $("#registerCmd").click(Register);
+            $("#registerDlg").dialog({
                 title: "...",
                 autoOpen: false,
                 modal: true,
@@ -409,7 +438,7 @@
                 maxHeight: 780,
                 position: { my: "top", at: "top", of: window },
                 buttons: [{
-                    id: "userDlgOkBtn",
+                    id: "registerDlgOkBtn",
                     text: "Title will be changed dynamically",
                     click: function () {
                         let user = userFromForm();
@@ -419,7 +448,7 @@
                             }
                             else
                                 PUT(user, getUsersList, error);
-                            resetuserForm();
+                            resetRegisterForm();
                             holdCheckETag = false;
                             $(this).dialog("close");
                         }
@@ -434,7 +463,49 @@
                 }]
             });
         }
-        
+        function initLoginForm() {
+            $("#loginCmd").click(Login);
+            $("#loginDlg").dialog({
+                title: "...",
+                autoOpen: false,
+                modal: true,
+                resizable: false, //Ne peut réajuster le dialogue
+                draggable: false, //Désactive le drag du dialogue
+                show: { effect: 'fade', speed: 400 },
+                hide: { effect: 'fade', speed: 400 },
+                width: 300,
+                minWidth: 300,
+                maxWidth: 300,
+                height: 390,
+                minHeight: 390,
+                maxHeight: 390,
+                position: { my: "center", at: "center", of: window },
+                buttons: [{
+                    id: "loginDlgOkBtn",
+                    text: "Title will be changed dynamically",
+                    click: function () {
+                        // let user = userFromForm();
+                        // if (user) {
+                        //     if (createMode) {
+                        //         POSTUSER(user, getUsersList, error);
+                        //     }
+                        //     else
+                        //         PUT(user, getUsersList, error);
+                        //     resetRegisterForm();
+                        //     holdCheckETag = false;
+                        //     $(this).dialog("close");
+                        // }
+                    }
+                },
+                {
+                    text: "Annuler",
+                    click: function () {
+                        holdCheckETag = false;
+                        $(this).dialog("close");
+                    }
+                }]
+            });
+        }
         function init_UI() {
             $("#newImageCmd").click(newImage)
 
