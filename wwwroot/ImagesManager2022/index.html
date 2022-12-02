@@ -396,7 +396,7 @@
             $("#description_input").val("");
             ImageUploader.resetImage('image');
         }
-        function userFromForm() {
+        function userRegisterFromForm() {
             if ($("#registerForm")[0].checkValidity()) {
                 let user = {
                     Id: parseInt($("#userId_input").val()),
@@ -413,7 +413,19 @@
             }
             return false;
         }
-        function userToForm(user) {
+        function userLoginFromForm() {
+            if ($("#loginForm")[0].checkValidity()) {
+                let loginInfo = {
+                    Email: $("#login-email_input").val(),
+                    Password: $("#login-password_input").val(),
+                };
+                return loginInfo;
+            } else {
+                $("#loginForm")[0].reportValidity()
+            }
+            return false;
+        }
+        function userRegisterToForm(user) {
             $("#name_input").val(user.Name);
             $("#email_input").val(user.Email);
             $("#password_input").val(user.Password);
@@ -421,7 +433,7 @@
 
             ImageUploader.setImage('image', image.OriginalURL);
         }
-
+        //userLoginToForm = () => {}
         function initRegisterDlg() {
             $("#registerCmd").click(Register);
             $("#registerDlg").dialog({
@@ -441,10 +453,10 @@
                     id: "registerDlgOkBtn",
                     text: "Title will be changed dynamically",
                     click: function () {
-                        let user = userFromForm();
+                        let user = userRegisterFromForm();
                         if (user) {
                             if (createMode) {
-                                POSTUSER(user, getUsersList, error);
+                                POST_REGISTER(user, getUsersList, error);
                             }
                             else
                                 PUT(user, getUsersList, error);
@@ -484,17 +496,11 @@
                     id: "loginDlgOkBtn",
                     text: "Title will be changed dynamically",
                     click: function () {
-                        // let user = userFromForm();
-                        // if (user) {
-                        //     if (createMode) {
-                        //         POSTUSER(user, getUsersList, error);
-                        //     }
-                        //     else
-                        //         PUT(user, getUsersList, error);
-                        //     resetRegisterForm();
-                        //     holdCheckETag = false;
-                        //     $(this).dialog("close");
-                        // }
+                        let loginInfo = userLoginFromForm();
+                        if(loginInfo){
+                            POST_LOGIN(loginInfo, (data) => {console.log(data)}, error);
+                        }
+                        // resetRegisterForm();
                     }
                 },
                 {
