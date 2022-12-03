@@ -60,6 +60,17 @@ function POST_REGISTER(data, successCallBack, errorCallBack) {
     });
 }
 
+function GET_VERIFY(id,code, successCallBack, errorCallBack) {
+    $.ajax({
+        url: apiAccountsURL + "/verify?id=" + id + "&code=" + code,
+        type: 'GET'//,
+        //contentType: 'application/json',
+        //data: JSON.stringify(data),
+        //success: (data) => { successCallBack(data) },
+        //error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    });
+}
+
 function PUT(bookmark, successCallBack, errorCallBack) {
     $.ajax({
         url: apiImageURL + "/" + bookmark.Id,

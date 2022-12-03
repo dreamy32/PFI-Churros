@@ -147,6 +147,17 @@
                 </form>
             </div>
         </div>
+
+        <div>
+            <div id="confirmationDlg">
+                <form id="confirmationForm">
+                    Consultez votre boite de courriel pour connaitre votre code de vérification et inscrivez le ci-dessous :)
+                    <br>
+                    <label for="confirmation_input">Code de vérification</label>
+                    <input id="confirmation_input" class="form-control" required>
+                </form>
+            </div>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
@@ -169,10 +180,12 @@
         let appendCount = 3;
         let previousScrollPosition = 0;
         let appendMode = false;
+        let currentUser;
 
         init_UI();
         initRegisterDlg();
         initLoginForm();
+        initConfirmationDlg();
         HEAD(checkETag, error);
         setInterval(() => { HEAD(checkETag, error) }, periodicRefreshPeriod * 1000);
 
@@ -310,6 +323,16 @@
             $("#registerDlg").dialog('option', 'title', "Création de compte");
             $("#registerDlgOkBtn").text("Créer");
             $("#registerDlg").dialog('open');
+        }
+
+        function Confirmation() {
+            holdCheckETag = true;
+            //createMode = true;
+            //resetRegisterForm();
+            //ImageUploader.imageRequired('image', true);
+            $("#confirmationDlg").dialog('option', 'title', "Vérification de courriel");
+            $("#confirmationDlgOkBtn").text("Envoyer");
+            $("#confirmationDlg").dialog('open');
         }
         function Login() {
             holdCheckETag = true;
@@ -459,7 +482,7 @@
                                 POST_REGISTER(user, getUsersList, error);
                             }
                             else
-                                PUT(user, getUsersList, error);
+                                PUT(user, getUsersList, error); // non
                             resetRegisterForm();
                             holdCheckETag = false;
                             $(this).dialog("close");
@@ -475,6 +498,41 @@
                 }]
             });
         }
+        function initConfirmationDlg() {
+            $("#registerDlgOkBtn").click(Confirmation);
+            $("#confirmationDlg").dialog({
+                title: "...",
+                autoOpen: false,
+                modal: true,
+                show: { effect: 'fade', speed: 400 },
+                hide: { effect: 'fade', speed: 400 },
+                width: 300,
+                minWidth: 300,
+                maxWidth: 300,
+                height: 390,
+                minHeight: 390,
+                maxHeight: 390,
+                position: { my: "top", at: "top", of: window },
+                buttons: [{
+                    id: "confirmationDlgOkBtn",
+                    text: "Title will be changed dynamically",
+                    click: function () {
+                                                                            //placeholder
+                        GET_VERIFY(currentUser.Id, currentUser.VerifyCode, getUsersList,error);
+                        // login
+                        
+                    }
+                },
+                {
+                    text: "Annuler",
+                    click: function () {
+                        holdCheckETag = false;
+                        $(this).dialog("close");
+                    }
+                }]
+            });
+        }
+
         function initLoginForm() {
             $("#loginCmd").click(Login);
             $("#loginDlg").dialog({
