@@ -153,8 +153,8 @@
                 <form id="confirmationForm">
                     Consultez votre boite de courriel pour connaitre votre code de vérification et inscrivez le ci-dessous :)
                     <br>
-                    <label for="confirmation_input">Code de vérification</label>
-                    <input id="confirmation_input" class="form-control" required>
+                    <label for="verify_input">Code de vérification</label>
+                    <input id="verify_input" class="form-control" required>
                 </form>
             </div>
         </div>
@@ -518,9 +518,9 @@
                     text: "Title will be changed dynamically",
                     click: function () {
                                                                             //placeholder
-                        GET_VERIFY(currentUser.Id, currentUser.VerifyCode, getUsersList,error);
+                        GET_VERIFY(parseInt($("#verify_input").val()),getUsersList,error);
                         // login
-                        
+                        parseInt($("#date_input").val())
                     }
                 },
                 {
