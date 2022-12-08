@@ -86,13 +86,7 @@ function deConnect() {
   sessionStorage.removeItem(userKey);
   eraseAccessToken();
 }
-// function StoreUserInfo(user) {
-//   sessionStorage.setItem("user", JSON.stringify(user));
-// }
 
-// function GetUserInfo() {
-//   return JSON.parse(sessionStorage.getItem(userKey));
-// }
 /*AJAX functions utilities*/
 function POST_REGISTER(data, successCallBack, errorCallBack) {
   $.ajax({
@@ -102,7 +96,7 @@ function POST_REGISTER(data, successCallBack, errorCallBack) {
     data: JSON.stringify(data),
     success: (data) => {
       successCallBack(data);
-      StoreUserInfo(data);
+      storeLoggedUser(data);
     },
     error: function (jqXHR) {
       errorCallBack(jqXHR.status);
@@ -127,7 +121,7 @@ function POST_LOGIN(Email, Password, successCallBack, errorCallBack) {
 
 function GET_VERIFY(code, successCallBack, errorCallBack) {
   $.ajax({
-    url: apiAccountsURL + "/verify?id=" + GetUserInfo().Id + "&code=" + code,
+    url: apiAccountsURL + "/verify?id=" + retrieveLoggedUser().Id + "&code=" + code,
     type: "GET" //,
     //contentType: 'application/json',
     //data: JSON.stringify(data),
