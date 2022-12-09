@@ -63,7 +63,7 @@
             </div> -->
             <div id="loggedPanel" style="margin-inline: 25px; display: none;">
                 <span class="btn btn-danger" id="logoutCmd">Déconnexion</span>
-                <span class="btn btn-primary" id="modifyCmd">Modifier le profil</span>
+                <span class="btn btn-primary editUserCmd" id="modifyCmd">Modifier le profil</span>
             </div>
             <div id="unloggedPanel" style="margin-inline: 25px;">
                 <span class="btn btn-primary" id="loginCmd">Connexion</span>
@@ -272,6 +272,7 @@
             $(".deleteCmd").off();
             $(".showMore").off();
             $(".editCmd").click(e => { editimage(e) });
+            $(".editUserCmd").click(e => { ModifyUser(e) });
             $(".deleteCmd").click(e => { deleteimage(e) });
 
             $('[data-toggle="tooltip"]').tooltip();
@@ -327,6 +328,28 @@
             $("#registerDlg").dialog('open');
         }
 
+        function ModifyUser(e) {
+            holdCheckETag = true;
+            createMode = false;
+            // user to form
+            retrieveLoggedUser().Id;
+            holdCheckETag = true;
+
+            $("#registerDlg").dialog('option', 'title', "Modification de profil");
+            $("#registerDlgOkBtn").text("Modifier");
+            $("#registerDlg").dialog('open');
+
+
+            // holdCheckETag = true;
+            // createMode = false;
+            // GET_ID(e.target.getAttribute("imageid"), imageToForm, error);
+            // holdCheckETag = true;
+            // ImageUploader.imageRequired('image', false);
+            // $("#imageDlg").dialog('option', 'title', "Modification d'image");
+            // $("#imageDlgOkBtn").text("Modifier");
+            // $("#imageDlg").dialog('open');
+        }
+
         function Confirmation() {
             holdCheckETag = true;
             //createMode = true;
@@ -354,6 +377,7 @@
             $("#imageDlgOkBtn").text("Modifier");
             $("#imageDlg").dialog('open');
         }
+
         function deleteimage(e) {
             holdCheckETag = true;
             imageIdToDelete = e.target.getAttribute("imageid")
@@ -500,6 +524,7 @@
                 }]
             });
         }
+
         function initConfirmationDlg() {
             $("#registerDlgOkBtn").click(Confirmation);
             $("#confirmationDlg").dialog({
