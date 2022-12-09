@@ -61,12 +61,13 @@
                 <button type="button" class="btn btn-danger">Déconnexion</button>
                 <button type="button" class="btn btn-primary">Modifier le profil</button>
             </div> -->
-            <div class="unloggedPanel" style="margin-inline: 25px;">
-                <span class="btn btn-primary" id="loginCmd" title="Se connecter" data-toggle="tooltip">Connexion</span>
-                <span class="btn btn-secondary" id="registerCmd" title="Créer un compte" data-toggle="tooltip">Créer un
-                    compte</span>
-                <!-- <button type="button" class="btn btn-primary">Connexion</button> -->
-                <!-- <button type="button" class="btn btn-secondary">Créer un compte</button> -->
+            <div id="loggedPanel" style="margin-inline: 25px; display: none;">
+                <span class="btn btn-danger" id="logoutCmd">Déconnexion</span>
+                <span class="btn btn-primary" id="modifyCmd">Modifier le profil</span>
+            </div>
+            <div id="unloggedPanel" style="margin-inline: 25px;">
+                <span class="btn btn-primary" id="loginCmd">Connexion</span>
+                <span class="btn btn-secondary" id="registerCmd">Créer un compte</span>
             </div>
 
         </div>
@@ -151,7 +152,8 @@
         <div>
             <div id="confirmationDlg">
                 <form id="confirmationForm">
-                    Consultez votre boite de courriel pour connaitre votre code de vérification et inscrivez le ci-dessous :)
+                    Consultez votre boite de courriel pour connaitre votre code de vérification et inscrivez le
+                    ci-dessous :)
                     <br>
                     <label for="verify_input">Code de vérification</label>
                     <input id="verify_input" class="form-control" required>
@@ -517,8 +519,8 @@
                     id: "confirmationDlgOkBtn",
                     text: "Title will be changed dynamically",
                     click: function () {
-                                                                            //placeholder
-                        GET_VERIFY(parseInt($("#verify_input").val()),getUsersList,error);
+                        //placeholder
+                        GET_VERIFY(parseInt($("#verify_input").val()), getUsersList, error);
                         // login
                         parseInt($("#date_input").val())
                     }
@@ -555,8 +557,12 @@
                     text: "Title will be changed dynamically",
                     click: function () {
                         let loginInfo = userLoginFromForm();
-                        if(loginInfo){
-                            POST_LOGIN(loginInfo, (data) => {console.log(data)}, error);
+                        if (loginInfo) {
+                            POST_LOGIN(loginInfo.Email, loginInfo.Password, (data) => {
+                                $("#loggedPanel").show();
+                                $("#unloggedPanel").hide();
+                                $(this).dialog("close");
+                            }, error);
                         }
                         // resetRegisterForm();
                     }
@@ -667,6 +673,11 @@
                     getImagesList(false);
                 }
             });
+            //if connected
+            if (retrieveAccessToken()) {
+                $("#loggedPanel").show();
+                $("#unloggedPanel").hide();
+            }
         }
     </script>
 

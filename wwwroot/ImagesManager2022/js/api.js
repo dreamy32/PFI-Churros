@@ -111,7 +111,7 @@ function POST_LOGIN(Email, Password, successCallBack, errorCallBack) {
     data: JSON.stringify({ Email, Password }),
     success: (profil) => {
       storeAccessToken(profil.Access_token);
-
+      GET_UserInfo(profil.UserId, successCallBack, errorCallBack);
     },
     error: function (jqXHR) {
       errorCallBack(jqXHR.status);
@@ -136,7 +136,6 @@ function GET_UserInfo(userId, successCallBack, errorCallBack) {
     contentType: "text/plain",
     data: {},
     success: (profil) => {
-      console.log(profil);
       storeLoggedUser(profil);
       successCallBack(profil);
     },
