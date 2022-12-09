@@ -24,34 +24,34 @@
                 <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
                 <div style="display:flex">
                     <span class="header outLinedText tbg-yellow">
-                        P
+                        B
                     </span>
                     <span class="header outLinedText tbg-orange">
                         I
                     </span>
                     <span class="header outLinedText tbg-red">
-                        C
-                    </span>
-                    <span class="header outLinedText tbg-pink ">
                         T
                     </span>
-                    <span class="header outLinedText tbg-black">
-                        -
-                    </span>
-                    <span class="header outLinedText tbg-purple">
+                    <span class="header outLinedText tbg-pink ">
                         C
                     </span>
+                    <span class="header outLinedText tbg-black">
+                        H
+                    </span>
+                    <span class="header outLinedText tbg-purple">
+                        -
+                    </span>
                     <span class="header outLinedText tbg-blue">
-                        L
+                        C
                     </span>
                     <span class="header outLinedText tbg-green">
-                        O
-                    </span>
-                    <span class="header outLinedText tbg-grass">
                         U
                     </span>
+                    <span class="header outLinedText tbg-grass">
+                        N
+                    </span>
                     <span class="header outLinedText tbg-yellow">
-                        D
+                        T
                     </span>
                 </div>
                 <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
@@ -272,7 +272,7 @@
             $(".deleteCmd").off();
             $(".showMore").off();
             $(".editCmd").click(e => { editimage(e) });
-            $(".editUserCmd").click(e => { ModifyUser(e) });
+            $(".editUserCmd").click(e => { ModifyUser() });
             $(".deleteCmd").click(e => { deleteimage(e) });
 
             $('[data-toggle="tooltip"]').tooltip();
@@ -328,11 +328,11 @@
             $("#registerDlg").dialog('open');
         }
 
-        function ModifyUser(e) {
+        function ModifyUser() {
             holdCheckETag = true;
             createMode = false;
             // user to form
-            retrieveLoggedUser().Id;
+            userToForm(retrieveLoggedUser());
             holdCheckETag = true;
 
             $("#registerDlg").dialog('option', 'title', "Modification de profil");
@@ -348,6 +348,16 @@
             // $("#imageDlg").dialog('option', 'title', "Modification d'image");
             // $("#imageDlgOkBtn").text("Modifier");
             // $("#imageDlg").dialog('open');
+        }
+        function editimage(e) {
+            holdCheckETag = true;
+            createMode = false;
+            GET_ID(e.target.getAttribute("imageid"), imageToForm, error);
+            holdCheckETag = true;
+            ImageUploader.imageRequired('image', false);
+            $("#imageDlg").dialog('option', 'title', "Modification d'image");
+            $("#imageDlgOkBtn").text("Modifier");
+            $("#imageDlg").dialog('open');
         }
 
         function Confirmation() {
@@ -367,17 +377,7 @@
             $("#loginDlgOkBtn").text("Connexion");
             $("#loginDlg").dialog('open');
         }
-        function editimage(e) {
-            holdCheckETag = true;
-            createMode = false;
-            GET_ID(e.target.getAttribute("imageid"), imageToForm, error);
-            holdCheckETag = true;
-            ImageUploader.imageRequired('image', false);
-            $("#imageDlg").dialog('option', 'title', "Modification d'image");
-            $("#imageDlgOkBtn").text("Modifier");
-            $("#imageDlg").dialog('open');
-        }
-
+        
         function deleteimage(e) {
             holdCheckETag = true;
             imageIdToDelete = e.target.getAttribute("imageid")
@@ -437,6 +437,14 @@
             $("#description_input").val(image.Description);
             ImageUploader.setImage('image', image.OriginalURL);
         }
+        function userToForm(user) {
+            $("#name_input").val(user.Name);
+            $("#email_input").val(user.Email);
+            $("#password_input").val(user.Password);
+            $("#avatar_input").val(user.AvatarGUID);
+
+            //ImageUploader.setImage('image', image.OriginalURL);
+        }
         function resetRegisterForm() {
             $("#Id_input").val("0");
             $("#GUID_input").val("");
@@ -474,14 +482,7 @@
             }
             return false;
         }
-        function userRegisterToForm(user) {
-            $("#name_input").val(user.Name);
-            $("#email_input").val(user.Email);
-            $("#password_input").val(user.Password);
-            $("#avatar_input").val(user.AvatarGUID);
-
-            ImageUploader.setImage('image', image.OriginalURL);
-        }
+        
         //userLoginToForm = () => {}
         function initRegisterDlg() {
             $("#registerCmd").click(Register);
@@ -504,11 +505,12 @@
                     click: function () {
                         let user = userRegisterFromForm();
                         if (user) {
-                            if (createMode) {
+                            if (createMode) { // create
                                 POST_REGISTER(user, getUsersList, error);
                             }
-                            else
-                                PUT(user, getUsersList, error); // non
+                            else // modify
+                            $("#confirmationDlg").dialog("close");
+                            modify_UserInfo(user, getUsersList, error); 
                             resetRegisterForm();
                             holdCheckETag = false;
                             $(this).dialog("close");
