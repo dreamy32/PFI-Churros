@@ -567,6 +567,8 @@
                 let userInfo = retrieveLoggedUser();
                 if (userInfo) {
                     logout(userInfo.Id, (() => {
+                        $("#loggedPanel").hide();
+                        $("#unloggedPanel").show();
                         console.log("Disconnected");
                     }), error);
                 }
