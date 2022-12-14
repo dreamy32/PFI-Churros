@@ -549,9 +549,15 @@
                     text: "Title will be changed dynamically",
                     click: function () {
                         //placeholder
-                        GET_VERIFY(parseInt($("#verify_input").val()), getUsersList, error);
+                        GET_VERIFY(parseInt($("#verify_input").val()), () => {
+
                         // login
                         parseInt($("#date_input").val())
+                        $(this).dialog.hide();
+
+                        },error);
+                        
+
                     }
                 },
                 {

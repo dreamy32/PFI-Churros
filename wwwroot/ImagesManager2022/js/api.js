@@ -126,11 +126,11 @@ function POST_LOGIN(Email, Password, successCallBack, errorCallBack) {
 function GET_VERIFY(code, successCallBack, errorCallBack) {
   $.ajax({
     url: apiAccountsURL + "/verify?id=" + retrieveLoggedUser().Id + "&code=" + code,
-    type: "GET" //,
+    type: "GET", //,
     //contentType: 'application/json',
-    //data: JSON.stringify(data),
-    //success: (data) => { successCallBack(data) },
-    //error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    data: {},
+    success: () => { successCallBack() },
+    error: function (jqXHR) { errorCallBack(jqXHR.status) }
   });
 }
 function GET_UserInfo(userId, successCallBack, errorCallBack) {
