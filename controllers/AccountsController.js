@@ -99,6 +99,7 @@ module.exports =
         }
         // PUT:account/modify body payload[{"Id": 0, "Name": "...", "Email": "...", "Password": "..."}]
         modify(user) {
+            console.log(user);
             if (this.writeAuthorization()) {
                 user.Created = utilities.nowInSeconds();
                 let foundedUser = this.repository.findByField("Id", user.Id);

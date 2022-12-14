@@ -347,6 +347,7 @@
             holdCheckETag = true;
             createMode = false;
             // user to form
+            
             userToForm(retrieveLoggedUser());
             holdCheckETag = true;
 
@@ -376,6 +377,8 @@
         }
 
         function Confirmation() {
+            if (createMode)
+            {
             holdCheckETag = true;
             //createMode = true;
             //resetRegisterForm();
@@ -383,6 +386,7 @@
             $("#confirmationDlg").dialog('option', 'title', "Vérification de courriel");
             $("#confirmationDlgOkBtn").text("Envoyer");
             $("#confirmationDlg").dialog('open');
+            }
         }
         function Login() {
             holdCheckETag = true;
@@ -416,14 +420,8 @@
             $("#description_input").val("");
             ImageUploader.resetImage('image');
         }
-        function resetRegisterForm() {
-            $("#Id_input").val("0");
-            $("#GUID_input").val("");
-            $("#date_input").val(Date.now());
-            $("#title_input").val("");
-            $("#description_input").val("");
-            ImageUploader.resetImage('image');
-        }
+
+        
         function resetLoginForm() {
             //To Define
         }
@@ -452,14 +450,6 @@
             $("#description_input").val(image.Description);
             ImageUploader.setImage('image', image.OriginalURL);
         }
-        function userToForm(user) {
-            $("#name_input").val(user.Name);
-            $("#email_input").val(user.Email);
-            $("#password_input").val(user.Password);
-            $("#avatar_input").val(user.AvatarGUID);
-
-            //ImageUploader.setImage('image', image.OriginalURL);
-        }
         function resetRegisterForm() {
             $("#Id_input").val("0");
             $("#GUID_input").val("");
@@ -485,6 +475,22 @@
             }
             return false;
         }
+
+        function userToForm(user) {
+            $("#userId_input").val(user.Id);
+            $("#name_input").val(user.Name);
+            $("#email_input").val(user.Email);
+            $("#password_input").val(user.Password);
+            $("#userGUID_input").val(user.AvatarGUID);
+            ImageUploader.resetImage('image');
+            $("#date_input").val(user.Date);
+            //$("#avatar_input").val(user.AvatarGUID);
+
+            console.log(user.Id);
+
+            //ImageUploader.setImage('image', image.OriginalURL);
+        }
+
         function userLoginFromForm() {
             if ($("#loginForm")[0].checkValidity()) {
                 let loginInfo = {
@@ -496,6 +502,20 @@
                 $("#loginForm")[0].reportValidity()
             }
             return false;
+        }
+
+        function userFromModify()
+        {
+                let user = {
+                    Id: parseInt($("#userId_input").val()),
+                    Name: $("#name_input").val(),
+                    Email: $("#email_input").val(),
+                    Password: $("#password_input").val(),
+                    //AvatarGUID: $("#userGUID_input").val(),
+                    //ImageData: ImageUploader.getImageData('image'),
+                    //Date: parseInt($("#date_input").val())
+                };
+                return user;
         }
 
         //userLoginToForm = () => {}
@@ -519,16 +539,26 @@
                     text: "Title will be changed dynamically",
                     click: function () {
                         let user = userRegisterFromForm();
-                        if (user) {
-                            if (createMode) { // create
+                        //console.log(user.Id);
+                        if (createMode)
+                        {
+                            if (user)
+                            {
                                 POST_REGISTER(user, getUsersList, error);
                             }
-                            else // modify
-                                $("#confirmationDlg").dialog("close");
+                        }
+                        else // modify
+                        {
+                            let user = userFromModify();
+                            //console.log(user.Id);
+                            
+
                             modify_UserInfo(user, getUsersList, error);
                             resetRegisterForm();
                             holdCheckETag = false;
                             $(this).dialog("close");
+                            $("#confirmationDlg").dialog("close");
+                            $("#confirmationDlg").hide();
                         }
                     }
                 },
@@ -562,9 +592,15 @@
                     text: "Title will be changed dynamically",
                     click: function () {
                         //placeholder
-                        GET_VERIFY(parseInt($("#verify_input").val()), getUsersList, error);
+                        GET_VERIFY(parseInt($("#verify_input").val()), () => {
+
                         // login
-                        parseInt($("#date_input").val())
+                        //parseInt($("#date_input").val());
+                        $(this).dialog("close");
+
+                        },error);
+                        
+
                     }
                 },
                 {

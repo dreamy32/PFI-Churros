@@ -107,6 +107,21 @@ function POST_REGISTER(data, successCallBack, errorCallBack) {
     },
   });
 }
+function modify_UserInfo(userInfo, successCallBack, errorCallBack) {
+  $.ajax({
+    url: `${apiAccountsURL}/modify`,
+    type: "PUT",
+    contentType: "application/json",
+    headers: getBearerAuthorizationToken(),
+    data: JSON.stringify(userInfo),
+    success: () => {
+      GET_UserInfo(userInfo.Id, successCallBack, error);
+    },
+    error: function (jqXHR) {
+      errorCallBack(jqXHR.status);
+    },
+  });
+}
 function POST_LOGIN(Email, Password, successCallBack, errorCallBack) {
   $.ajax({
     url: apiTokenURL,
@@ -126,11 +141,11 @@ function POST_LOGIN(Email, Password, successCallBack, errorCallBack) {
 function GET_VERIFY(code, successCallBack, errorCallBack) {
   $.ajax({
     url: apiAccountsURL + "/verify?id=" + retrieveLoggedUser().Id + "&code=" + code,
-    type: "GET" //,
+    type: "GET", //,
     //contentType: 'application/json',
-    //data: JSON.stringify(data),
-    //success: (data) => { successCallBack(data) },
-    //error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    data: {},
+    success: () => { successCallBack() },
+    error: function (jqXHR) { errorCallBack(jqXHR.status) }
   });
 }
 function GET_UserInfo(userId, successCallBack, errorCallBack) {
@@ -148,21 +163,7 @@ function GET_UserInfo(userId, successCallBack, errorCallBack) {
     },
   });
 }
-function modify_UserInfo(userInfo, successCallBack, errorCallBack) {
-  $.ajax({
-    url: `${apiAccountsURL}/modify` + "/" + userInfo.Id,
-    type: "PUT",
-    contentType: "application/json",
-    headers: getBearerAuthorizationToken(),
-    data: JSON.stringify(userInfo),
-    success: () => {
-      GET_UserInfo(userInfo.Id, successCallBack, error);
-    },
-    error: function (jqXHR) {
-      errorCallBack(jqXHR.status);
-    },
-  });
-}
+
 function logout(userId, successCallBack, errorCallBack) {
   $.ajax({
     url: `${apiAccountsURL}/logout` + "/" + userId,
