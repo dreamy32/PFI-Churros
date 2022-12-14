@@ -107,6 +107,21 @@ function POST_REGISTER(data, successCallBack, errorCallBack) {
     },
   });
 }
+function modify_UserInfo(userInfo, successCallBack, errorCallBack) {
+  $.ajax({
+    url: `${apiAccountsURL}/modify`,
+    type: "PUT",
+    contentType: "application/json",
+    headers: getBearerAuthorizationToken(),
+    data: JSON.stringify(userInfo),
+    success: () => {
+      GET_UserInfo(userInfo.Id, successCallBack, error);
+    },
+    error: function (jqXHR) {
+      errorCallBack(jqXHR.status);
+    },
+  });
+}
 function POST_LOGIN(Email, Password, successCallBack, errorCallBack) {
   $.ajax({
     url: apiTokenURL,
@@ -148,21 +163,7 @@ function GET_UserInfo(userId, successCallBack, errorCallBack) {
     },
   });
 }
-function modify_UserInfo(userInfo, successCallBack, errorCallBack) {
-  $.ajax({
-    url: `${apiAccountsURL}/modify` + "/" + userInfo.Id,
-    type: "PUT",
-    contentType: "application/json",
-    headers: getBearerAuthorizationToken(),
-    data: JSON.stringify(userInfo),
-    success: () => {
-      GET_UserInfo(userInfo.Id, successCallBack, error);
-    },
-    error: function (jqXHR) {
-      errorCallBack(jqXHR.status);
-    },
-  });
-}
+
 function logout(userId, successCallBack, errorCallBack) {
   $.ajax({
     url: `${apiAccountsURL}/logout` + "/" + userId,
