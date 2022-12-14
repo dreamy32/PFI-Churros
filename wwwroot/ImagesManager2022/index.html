@@ -19,12 +19,15 @@
 <body>
 
     <div class="mainContainer">
+        <div>
+
+        </div>
         <div class="headerPanel">
             <div class="headerLayout">
                 <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
                 <div style="display:flex">
                     <span class="header outLinedText tbg-yellow">
-                        
+
                         p
                     </span>
                     <span class="header outLinedText tbg-orange">
@@ -55,20 +58,29 @@
                         D
                     </span>
                 </div>
-                <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
+            </div>
+            <div class="userPanel left" style="flex: 1;">
+                <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image" data-toggle="tooltip"
+                    style="display: none;"></span>
+                <span class="cmd fa fa-arrow-down-short-wide" id="sortCmd" title="Trier" data-toggle="tooltip"></span>
+                <span class="cmd fa fa-magnifying-glass-plus" id="searchCmd" title="Rechercher"
                     data-toggle="tooltip"></span>
             </div>
-            <!-- <div class="loggedPanel" style="margin-inline: 25px;">
-                <button type="button" class="btn btn-danger">Déconnexion</button>
-                <button type="button" class="btn btn-primary">Modifier le profil</button>
-            </div> -->
-            <div id="loggedPanel" style="margin-inline: 25px; display: none;">
-                <span class="btn btn-danger" id="logoutCmd">Déconnexion</span>
-                <span class="btn btn-primary editUserCmd" id="modifyCmd">Modifier le profil</span>
+            <div class="userPanel" id="profileContainer" style="margin-right: 15px; display: none;">
+                <img class="avatar" src="./images/No_Avatar.png" alt="">
+                <span class="userName" id="username">John Doe</span>
             </div>
-            <div id="unloggedPanel" style="margin-inline: 25px;">
-                <span class="btn btn-primary" id="loginCmd">Connexion</span>
-                <span class="btn btn-secondary" id="registerCmd">Créer un compte</span>
+            <div class="userPanel right" id="loggedPanel">
+                <span class="cmd fa fa-address-card editUserCmd" id="modifyCmd" title="Modifier le profil"
+                    data-toggle="tooltip" style="display: none;"></span>
+                <span class="cmd fa fa-arrow-right-from-bracket" id="logoutCmd" title="Modifier le profil"
+                    data-toggle="tooltip" style="display: none;"></span>
+            </div>
+            <div class="userPanel right" id="unloggedPanel">
+                <span class="cmd fa fa-arrow-right-to-bracket" id="loginCmd" title="Se connecter" data-toggle="tooltip"
+                    style="display: none;"></span>
+                <span class="cmd fa fa-user-plus" id="registerCmd" title="S'enregistrer" data-toggle="tooltip"
+                    style="display: none;"></span>
             </div>
 
         </div>
@@ -186,6 +198,7 @@
         let currentUser;
 
         init_UI();
+        init_Header();
         initRegisterDlg();
         initLoginForm();
         initLogout();
@@ -568,8 +581,7 @@
                 let userInfo = retrieveLoggedUser();
                 if (userInfo) {
                     logout(userInfo.Id, (() => {
-                        $("#loggedPanel").hide();
-                        $("#unloggedPanel").show();
+                        init_Header();
                         console.log("Disconnected");
                     }), error);
                 }
@@ -603,8 +615,7 @@
                             localStorage.setItem("rememberUser", rememberUser);
                             //Log user
                             POST_LOGIN(loginInfo.Email, loginInfo.Password, () => {
-                                $("#loggedPanel").show();
-                                $("#unloggedPanel").hide();
+                                init_Header();
                                 $(this).dialog("close");
                             }, error);
                         }
@@ -722,6 +733,46 @@
                 $("#loggedPanel").show();
                 $("#unloggedPanel").hide();
             }
+        }
+        function init_Header() {
+            //Image Command Icons
+            let newImageIcon = $("#newImageCmd");
+            //User 
+            let profileContainer = $("#profileContainer");
+            let username = $("#username");
+            //Command Icons
+            let registerIcon = $("#registerCmd");
+            let loginIcon = $("#loginCmd");
+            let logoutIcon = $("#logoutCmd");
+            let modifyIcon = $("#modifyCmd");
+            //UserInfo
+            let user = retrieveLoggedUser();
+
+            //Hide Everything on initialization
+            newImageIcon.hide();
+            profileContainer.hide();
+            registerIcon.hide();
+            loginIcon.hide();
+            logoutIcon.hide();
+            modifyIcon.hide();
+
+            //Show depending if user info
+            if (user) {
+                //Image Command Icon
+                newImageIcon.show();
+                //User Command Icons
+                logoutIcon.show();
+                modifyIcon.show();
+                //Profile Container
+                username.text(user.Name);
+                profileContainer.show();
+            }
+            else {
+                loginIcon.show();
+                registerIcon.show();
+            }
+
+
         }
     </script>
 
