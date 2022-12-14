@@ -187,6 +187,7 @@
         init_UI();
         initRegisterDlg();
         initLoginForm();
+        initLogout();
         initConfirmationDlg();
         HEAD(checkETag, error);
         setInterval(() => { HEAD(checkETag, error) }, periodicRefreshPeriod * 1000);
@@ -377,7 +378,7 @@
             $("#loginDlgOkBtn").text("Connexion");
             $("#loginDlg").dialog('open');
         }
-        
+
         function deleteimage(e) {
             holdCheckETag = true;
             imageIdToDelete = e.target.getAttribute("imageid")
@@ -482,7 +483,7 @@
             }
             return false;
         }
-        
+
         //userLoginToForm = () => {}
         function initRegisterDlg() {
             $("#registerCmd").click(Register);
@@ -509,8 +510,8 @@
                                 POST_REGISTER(user, getUsersList, error);
                             }
                             else // modify
-                            $("#confirmationDlg").dialog("close");
-                            modify_UserInfo(user, getUsersList, error); 
+                                $("#confirmationDlg").dialog("close");
+                            modify_UserInfo(user, getUsersList, error);
                             resetRegisterForm();
                             holdCheckETag = false;
                             $(this).dialog("close");
@@ -561,7 +562,16 @@
                 }]
             });
         }
-
+        function initLogout() {
+            $("#logoutCmd").click(() => {
+                let userInfo = retrieveLoggedUser();
+                if (userInfo) {
+                    logout(userInfo.Id, (() => {
+                        console.log("Disconnected");
+                    }), error);
+                }
+            })
+        }
         function initLoginForm() {
             $("#loginCmd").click(Login);
             $("#loginDlg").dialog({
@@ -584,8 +594,12 @@
                     text: "Title will be changed dynamically",
                     click: function () {
                         let loginInfo = userLoginFromForm();
+                        let rememberUser = $("#remember-input").is(":checked");
                         if (loginInfo) {
-                            POST_LOGIN(loginInfo.Email, loginInfo.Password, (data) => {
+                            //Remember user
+                            localStorage.setItem("rememberUser", rememberUser);
+                            //Log user
+                            POST_LOGIN(loginInfo.Email, loginInfo.Password, () => {
                                 $("#loggedPanel").show();
                                 $("#unloggedPanel").hide();
                                 $(this).dialog("close");

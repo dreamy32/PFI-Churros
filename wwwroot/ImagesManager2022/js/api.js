@@ -60,34 +60,38 @@ function DELETE(id, successCallBack, errorCallBack) {
     },
   });
 }
-/*Local Storage utilities functions */
+//#region Local Storage utilities functions
+function getStorageType() {
+  return localStorage.getItem("rememberUser") === 'true' ? localStorage : sessionStorage;
+}
 function tokenRequestURL() {
   return apiTokenURL;
 }
 function storeAccessToken(token) {
-  sessionStorage.setItem(accessTokenKey, token);
+  getStorageType().setItem(accessTokenKey, token);
 }
 function eraseAccessToken() {
-  sessionStorage.removeItem(accessTokenKey);
+  getStorageType().removeItem(accessTokenKey);
 }
 function retrieveAccessToken() {
-  return sessionStorage.getItem(accessTokenKey);
+  return getStorageType().getItem(accessTokenKey);
 }
 function getBearerAuthorizationToken() {
   return { 'Authorization': `Bearer ${retrieveAccessToken()}` };
 }
 function storeLoggedUser(user) {
-  sessionStorage.setItem(userKey, JSON.stringify(user));
+  getStorageType().setItem(userKey, JSON.stringify(user));
 }
 function retrieveLoggedUser() {
-  return JSON.parse(sessionStorage.getItem(userKey));
+  return JSON.parse(getStorageType().getItem(userKey));
 }
 function deConnect() {
-  sessionStorage.removeItem(userKey);
+  getStorageType().removeItem(userKey);
   eraseAccessToken();
+  localStorage.removeItem("rememberUser");
 }
-
-/*AJAX functions utilities*/
+//#endregion
+//#region AJAX functions utilities
 function POST_REGISTER(data, successCallBack, errorCallBack) {
   $.ajax({
     url: apiAccountsURL + "/register",
@@ -199,3 +203,4 @@ function GET_ALL(successCallBack, errorCallBack, queryString = null) {
     },
   });
 }
+//#endregion
