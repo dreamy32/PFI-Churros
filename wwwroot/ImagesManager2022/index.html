@@ -101,13 +101,17 @@
                         <li><a data-search="rooms">rooms</a></li>
                     </ul>
                 </div>
-                <input type="text" class="form-control" name="x" placeholder="Rechercher mot-clé...">
+                <input id="search-bar" type="search" list="search-history" class="form-control"
+                    placeholder="Rechercher mot-clé...">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span
+                    <button id="searchCmd" class="btn btn-default" type="button"><span
                             class="glyphicon glyphicon-search"></span></button>
                 </span>
             </div>
         </div>
+        <datalist id="search-history">
+            <option value="HTML">
+        </datalist>
         <div class="scrollContainer">
             <div id="imagesList">
                 <!-- filled programmatically-->
@@ -243,6 +247,36 @@
             $("#toggleSearchCmd").click(() => {
                 $("#search-group").slideToggle(200);
             });
+            $("#searchCmd").click(() => {
+                let keywordHistory = localStorage.getItem("keyword history");
+                let searchBar = $("#search-bar");
+                if (searchBar.val().trim()) {
+                    if (keywordHistory !== null) {
+                        let storedKeywords = JSON.parse(keywordHistory);
+                        if (!storedKeywords.includes(searchBar.val())) {
+                            storedKeywords.push(searchBar.val());
+                            localStorage.setItem("keyword history", JSON.stringify(storedKeywords));
+                        }
+                    }
+                    else {
+                        localStorage.setItem("keyword history", JSON.stringify([searchBar.val()]))
+                    }
+                    init_searchDataList();
+                }
+            })
+            function init_searchDataList() {
+                let keywordHistory = localStorage.getItem("keyword history");
+                let searchHistoryList = $("#search-history");
+                if (keywordHistory !== null) {
+                    searchHistoryList.empty();
+                    let storedKeywords = JSON.parse(keywordHistory);
+                    for (let keyword of storedKeywords) {
+                        let newOption = $("<option>").val(keyword);
+                        searchHistoryList.append(newOption);
+                    }
+                }
+            }
+            init_searchDataList();
             initRegisterDlg();
             initLoginForm();
             initSureDlg();
