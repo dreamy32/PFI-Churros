@@ -164,6 +164,11 @@
                 </form>
             </div>
         </div>
+        <div>
+            <div id="areyousureDlg">
+                Voulez-vous vraiment effacer votre compte ?
+            </div>
+        </div>
 
         <div>
             <div id="aboutDlg"
@@ -213,6 +218,7 @@
         init_Header();
         initRegisterDlg();
         initLoginForm();
+        initSureDlg();
         init_About();
         initLogout();
         initConfirmationDlg();
@@ -239,6 +245,13 @@
                 return queryString;
             }
             GET_ALL(refreshimagesList, error, prepareQueryString());
+        }
+
+        function ImSure()
+        {
+            $("#areyousureDlg").dialog('option', 'title', "Attention !");
+            $("#yousureDlgOkBtn").text("Désinscire mon compte");
+            $("#areyousureDlg").dialog('open');
         }
 
         function getUsersList(refresh = true) {
@@ -553,10 +566,10 @@
                 {
                     id:"deleteAccountBtn",
                     text: "Désinscrire",
-                    
-                    click: function () {
-                        DELETE_USER(error);
-                        }
+                    click: function ()
+                    {
+                        $(this).dialog("close");
+                    }
                 },
                 {
                     id: "registerDlgOkBtn",
@@ -585,6 +598,44 @@
                             $("#confirmationDlg").dialog("close");
                             $("#confirmationDlg").hide();
                         }
+                    }
+                },
+                {
+                    text: "Annuler",
+                    click: function () {
+                        holdCheckETag = false;
+                        $(this).dialog("close");
+                    }
+                }]
+            });
+        }
+
+        function initSureDlg() {
+            $("#deleteAccountBtn").click(ImSure);
+            $("#areyousureDlg").dialog({
+                title: "...",
+                autoOpen: false,
+                modal: true,
+                show: { effect: 'fade', speed: 400 },
+                hide: { effect: 'fade', speed: 400 },
+                width: 300,
+                minWidth: 300,
+                maxWidth: 300,
+                height: 390,
+                minHeight: 390,
+                maxHeight: 390,
+                position: { my: "top", at: "top", of: window },
+                buttons: [{
+                    id: "yousureDlgOkBtn",
+                    text: "Title will be changed dynamically",
+                    click: function () {
+                        
+                        DELETE_USER(() => {
+
+                            $(this).dialog("close");
+
+                        }, error);
+
                     }
                 },
                 {

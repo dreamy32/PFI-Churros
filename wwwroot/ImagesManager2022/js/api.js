@@ -60,12 +60,13 @@ function DELETE(id, successCallBack, errorCallBack) {
     },
   });
 }
-function DELETE_USER(errorCallBack) {
+function DELETE_USER(successCallBack, errorCallBack) {
   $.ajax({
     url: apiAccountsURL + "/remove/" + retrieveLoggedUser().Id,
     type: "GET",
     headers: getBearerAuthorizationToken(),
     success: () => {
+      successCallBack();
       //logout();
     },
     error: function (jqXHR) {
