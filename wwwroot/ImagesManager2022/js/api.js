@@ -188,6 +188,21 @@ function GET_UserInfo(userId, successCallBack, errorCallBack) {
     },
   });
 }
+function GET_UsersList(successCallBack, errorCallBack) {
+  $.ajax({
+    url: `${apiAccountsURL}/index`,
+    type: "GET",
+    contentType: "application/json",
+    headers: getBearerAuthorizationToken(),
+    data: {},
+    success: (userList) => {
+      successCallBack(userList);
+    },
+    error: function (jqXHR) {
+      errorCallBack(jqXHR.status);
+    },
+  });
+}
 
 function logout(userId, successCallBack, errorCallBack) {
   $.ajax({

@@ -93,12 +93,11 @@
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span class="search_by">Filter by</span> <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" role="menu">
+                    <ul id="userSort" class="dropdown-menu" role="menu" style="max-height: 500px; overflow-y: auto;">
                         <li><a data-search="all">Tous les usagers</a></li>
+                        <li><a data-search="all">Vos images</a></li>
                         <li class="divider"></li>
-                        <li><a data-search="students">students</a></li>
-                        <li><a data-search="teachers">teachers</a></li>
-                        <li><a data-search="rooms">rooms</a></li>
+
                     </ul>
                 </div>
                 <input id="search-bar" type="search" list="search-history" class="form-control"
@@ -241,9 +240,21 @@
             let appendMode = false;
             let currentUser;
 
+            GET_UsersList((userList) => {
+                let dropdown = $("#userSort");
+                GET_ALL((images) => {
+                    let sharedUsers = userList.filter(user => images.some(image => image.UserId === user.Id));
+                    for (user of sharedUsers) {
+                        let newLiElement = $("<li></li>");
+                        let newAElement = $("<a></a>").text(user.Name).attr("data-search", user.Id);
+                        newLiElement.append(newAElement);
+                        dropdown.append(newLiElement);
+                    }
+                }, error);
+            }, error);
             init_UI();
             init_Header();
-            $("#sortCmd").click(e => { sortImages(e) });
+            $("#sortCmd").click(e => { sortImages() });
             $("#toggleSearchCmd").click(() => {
                 $("#search-group").slideToggle(200);
             });
@@ -262,7 +273,9 @@
                         localStorage.setItem("keyword history", JSON.stringify([searchBar.val()]))
                     }
                     init_searchDataList();
+                    getImagesList();
                 }
+                getImagesList(true);
             })
             function init_searchDataList() {
                 let keywordHistory = localStorage.getItem("keyword history");
@@ -298,11 +311,12 @@
                 function prepareQueryString() {
                     //queryString = `?sort=Date,${asc ? "asc" : "desc"}`;
                     let queryString = "";
+                    let searchBar = $("#search-bar");
                     if (appendMode) {
                         queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
                         imagesCount += appendCount;
                     } else {
-                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}`;
+                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}&Title=${searchBar.val()}`;
                     }
                     return queryString;
                 }
