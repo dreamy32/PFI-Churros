@@ -67,7 +67,7 @@
                     data-toggle="tooltip"></span>
             </div>
             <div class="userPanel" id="profileContainer" style="margin-right: 15px; display: none;">
-                <img class="avatar" src="./images/No_Avatar.png" alt="">
+                <img class="avatar" id="user_avatar" src="./images/No_Avatar.png" alt="">
                 <span class="userName" id="username">John Doe</span>
             </div>
             <div class="userPanel right" id="loggedPanel">
@@ -466,7 +466,7 @@
                     Email: $("#email_input").val(),
                     Password: $("#password_input").val(),
                     AvatarGUID: $("#userGUID_input").val(),
-                    ImageData: ImageUploader.getImageData('image'),
+                    ImageData: ImageUploader.getImageData('avatar'),
                     Date: parseInt($("#date_input").val())
                 };
                 return user;
@@ -776,6 +776,7 @@
             //User 
             let profileContainer = $("#profileContainer");
             let username = $("#username");
+            let image = $("#user_avatar");
             //Command Icons
             let registerIcon = $("#registerCmd");
             let loginIcon = $("#loginCmd");
@@ -801,6 +802,9 @@
                 modifyIcon.show();
                 //Profile Container
                 username.text(user.Name);
+                let url = baseUrl + "/images/" + retrieveLoggedUser().AvatarGUID + ".png";
+                console.log(url);
+                image.attr("src", url);
                 profileContainer.show();
             }
             else {
