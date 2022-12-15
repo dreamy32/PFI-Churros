@@ -6,8 +6,8 @@ module.exports = class Image extends Model {
     this.Description = "";
     this.Date = 0;
     this.GUID = "";
-    this.userId = "";
-    this.shared = "";
+    this.UserId = "";
+    this.Shared = "";
 
     this.addValidator("Title", "string");
     this.addValidator("Description", "string");

@@ -111,6 +111,8 @@
                         waitingImage='images/writing.gif'>
                     </div>
                     <div class="note">Cliquez-Déposez une image</div>
+                    <label for="partage">Partager</label>
+                    <input type="checkbox" name="partage" id="partage">
                 </form>
             </div>
 
@@ -460,7 +462,9 @@
                         Title: $("#title_input").val(),
                         Description: $("#description_input").val(),
                         ImageData: ImageUploader.getImageData('image'),
-                        Date: parseInt($("#date_input").val())
+                        Date: parseInt($("#date_input").val()),
+                        Shared: $("#partage").is(':checked'),
+                        UserId: retrieveLoggedUser().Id
                     };
                     return image;
                 } else {
