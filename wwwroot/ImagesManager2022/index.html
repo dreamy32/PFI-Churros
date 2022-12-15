@@ -353,7 +353,7 @@
                                                 style="background-image:url('${image.ThumbnailURL}')">
                                         </div>
                                     </a>                                                                                                         
-                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${image.Shared && image.UserId != retrieveLoggedUser().Id ? retrieveLoggedUser().AvatarURL : image.Shared && image.UserId == retrieveLoggedUser().Id ? "images/shared.png" : "" }>
+                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${retrieveLoggedUser() == null ? "autre usager" : image.Shared && image.UserId != retrieveLoggedUser().Id ? "autre usager" : image.Shared && image.UserId == retrieveLoggedUser().Id ? "images/shared.png" : "" }>
                                     <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
                                 </div>
                         `)
@@ -367,8 +367,17 @@
                     imagesCount -= appendCount;
 
                 for (let image of images) {
-                    if (image.Shared || image.UserId == retrieveLoggedUser().Id)
+
+                    if (retrieveLoggedUser() == null)
+                    {
+                    if (image.Shared){
+                        insertIntoImageList(image);}
+                    }
+                    else
+                    {
+                        if (image.Shared || image.UserId == retrieveLoggedUser().Id)
                         insertIntoImageList(image);
+                    }
                 }
 
                 $(".scrollContainer").scrollTop(previousScrollPosition);
@@ -455,6 +464,9 @@
                 // $("#imageDlgOkBtn").text("Modifier");
                 // $("#imageDlg").dialog('open');
             }
+
+
+            
             function editimage(e) {
                 holdCheckETag = true;
                 createMode = false;
