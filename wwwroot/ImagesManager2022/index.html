@@ -366,7 +366,8 @@
                     imagesCount -= appendCount;
 
                 for (let image of images) {
-                    insertIntoImageList(image);
+                    if (image.Shared || image.UserId == retrieveLoggedUser().Id)
+                        insertIntoImageList(image);
                 }
 
                 $(".scrollContainer").scrollTop(previousScrollPosition);
