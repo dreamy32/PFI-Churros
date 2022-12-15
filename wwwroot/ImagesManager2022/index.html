@@ -64,7 +64,7 @@
                     data-toggle="tooltip"></span>
             </div>
             <div class="userPanel" id="profileContainer" style="margin-right: 15px; display: none;">
-                <img class="avatar" src="./images/No_Avatar.png" alt="">
+                <img class="avatar" id="user_avatar" src="./images/No_Avatar.png" alt="">
                 <span class="userName" id="username">John Doe</span>
             </div>
             <div class="userPanel right" id="loggedPanel">
@@ -470,7 +470,7 @@
                         Email: $("#email_input").val(),
                         Password: $("#password_input").val(),
                         AvatarGUID: $("#userGUID_input").val(),
-                        ImageData: ImageUploader.getImageData('image'),
+                        ImageData: ImageUploader.getImageData('avatar'),
                         Date: parseInt($("#date_input").val())
                     };
                     return user;
@@ -808,28 +808,8 @@
                     loginIcon.show();
                     registerIcon.show();
                 }
-            }
-            function init_About() {
-                $("#logo").click(() => {
-                    $("#aboutDlg").dialog('open');
-                });
-                $("#aboutDlg").dialog({
-                    title: "À propos",
-                    autoOpen: false,
-                    modal: true,
-                    resizable: false,
-                    width: "auto",
-                    show: { effect: 'fade', speed: 400 },
-                    hide: { effect: 'fade', speed: 400 },
-                    position: { my: "center", at: "center", of: window },
-                    buttons: [
-                        {
-                            text: "Fermer",
-                            click: function () {
-                                $(this).dialog("close");
-                            }
-                        }]
-                });
+
+
             }
         </script>
 
