@@ -809,24 +809,20 @@
 
             //Show depending if user info
             if (user) {
-                //Image Command Icon
-                newImageIcon.show();
-                //User Command Icons
-                logoutIcon.show();
-                modifyIcon.show();
-                //Profile Container
-                username.text(user.Name);
+                    //Image Command Icon
+                    newImageIcon.show();
+                    //User Command Icons
+                    logoutIcon.show();
+                    modifyIcon.show();
+                    //Profile Container
+                    username.text(user.Name);
 
-                let url = baseUrl + "/images/" + retrieveLoggedUser().AvatarGUID + ".png";
-
-                if (retrieveLoggedUser().AvatarGUID == "")
-                {
-                    let url = baseUrl + "/images/" + "No_Avatar" + ".png";
-
+                    let url = user.AvatarURL;
+                    if (url !== "" && url !== null && !url.includes("undefined")) {
+                        image.attr("src", url);
+                    }
+                    profileContainer.show();
                 }
-                image.attr("src", url);
-                profileContainer.show();
-            }
             else {
                 loginIcon.show();
                 registerIcon.show();
