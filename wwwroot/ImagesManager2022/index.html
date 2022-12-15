@@ -216,7 +216,7 @@
 
             init_UI();
             init_Header();
-            $("#sortCmd").click(e => { sortImages() });
+            $("#sortCmd").click(e => { sortImages(e) });
             initRegisterDlg();
             initLoginForm();
             initSureDlg();
@@ -229,7 +229,7 @@
             function checkETag(ETag) {
                 if (!holdCheckETag && ETag != currentETag) {
                     currentETag = ETag;
-                    getImagesList();
+                    sortImages();
                 }
             }
 
@@ -426,7 +426,7 @@
 
             function deleteimage(e) {
                 holdCheckETag = true;
-                imageIdToDelete = e.target.getAttribute("imageid")
+                imageIdToDelete = e.target.getAttribute("imageid");
                 GET_ID(
                     imageIdToDelete,
                     image => {
@@ -531,11 +531,25 @@
                 return false;
             }
 
-            let asc = true;
-
+            let asc = false;
             function sortImages() {
-
                 asc = !asc;
+                let ascIconClass = "fa-arrow-down-short-wide";
+                let descIconClass = "fa-arrow-up-short-wide";
+                if (asc) {
+                    $("#sortCmd").attr("title", "Trier descendant");
+                    $("#sortCmd").addClass(ascIconClass);
+                    $("#sortCmd").removeClass(descIconClass);
+                }
+                else {
+                    $("#sortCmd").attr("title", "Trier ascendant");
+                    $("#sortCmd").removeClass(ascIconClass);
+                    $("#sortCmd").addClass(descIconClass);
+                }
+                $("#sortCmd").mouseout();
+                $("#sortCmd").mouseenter();
+
+                // console.log(e);
                 getImagesList();
                 // console.log("yop");
 
