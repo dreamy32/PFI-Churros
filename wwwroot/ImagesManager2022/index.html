@@ -353,6 +353,7 @@
                                                 style="background-image:url('${image.ThumbnailURL}')">
                                         </div>
                                     </a>
+                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${image.Shared && image.UserId != retrieveLoggedUser().Id ? retrieveLoggedUser().AvatarURL : "images/shared.png" }>
                                     <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
                                 </div>
                         `)
