@@ -70,7 +70,7 @@
             <div class="userPanel right" id="loggedPanel">
                 <span class="cmd fa fa-address-card editUserCmd" id="modifyCmd" title="Modifier le profil"
                     data-toggle="tooltip" style="display: none;"></span>
-                <span class="cmd fa fa-arrow-right-from-bracket" id="logoutCmd" title="Modifier le profil"
+                <span class="cmd fa fa-arrow-right-from-bracket" id="logoutCmd" title="Se déconnecter"
                     data-toggle="tooltip" style="display: none;"></span>
             </div>
             <div class="userPanel right" id="unloggedPanel">
@@ -777,6 +777,7 @@
                 //User 
                 let profileContainer = $("#profileContainer");
                 let username = $("#username");
+                let avatar = $("#user_avatar");
                 //Command Icons
                 let registerIcon = $("#registerCmd");
                 let loginIcon = $("#loginCmd");
@@ -802,6 +803,8 @@
                     modifyIcon.show();
                     //Profile Container
                     username.text(user.Name);
+                    if (user.AvatarURL)
+                        image.attr("src", url);
                     profileContainer.show();
                 }
                 else {
@@ -810,6 +813,28 @@
                 }
 
 
+            }
+            function init_About() {
+                $("#logo").click(() => {
+                    $("#aboutDlg").dialog('open');
+                });
+                $("#aboutDlg").dialog({
+                    title: "À propos",
+                    autoOpen: false,
+                    modal: true,
+                    resizable: false,
+                    width: "auto",
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    position: { my: "center", at: "center", of: window },
+                    buttons: [
+                        {
+                            text: "Fermer",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
             }
         </script>
 
