@@ -147,26 +147,6 @@
     "VerifyCode": "verified"
   },
   {
-    "Id": 19,
-    "Name": "testebobux",
-    "Email": "testebobux@yopmail.com",
-    "Password": "testebobux",
-    "AvatarGUID": "",
-    "Date": 1671053936023,
-    "Created": 1671053945,
-    "VerifyCode": "verified"
-  },
-  {
-    "Id": 20,
-    "Name": "bobbybobux",
-    "Email": "bobbybobux@yopmail.com",
-    "Password": "bobbybobux",
-    "AvatarGUID": "",
-    "Date": 1671054067264,
-    "Created": 1671054081,
-    "VerifyCode": "verified"
-  },
-  {
     "Id": 21,
     "Name": "pkmarchepas",
     "Email": "pkmarchepas@yopmail.com",
@@ -175,16 +155,6 @@
     "Date": 1671054192534,
     "Created": 1671054203,
     "VerifyCode": "verified"
-  },
-  {
-    "Id": 22,
-    "Name": "grosbozo",
-    "Email": "grosbozo@yopmail.com",
-    "Password": "12345",
-    "AvatarGUID": "",
-    "Date": 1671055693233,
-    "Created": 1671055711,
-    "VerifyCode": 89461
   },
   {
     "Id": 23,

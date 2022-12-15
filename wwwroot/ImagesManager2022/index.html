@@ -235,12 +235,13 @@
             function getImagesList(refresh = true) {
                 appendMode = !refresh;
                 function prepareQueryString() {
+                    //queryString = `?sort=Date,${asc ? "asc" : "desc"}`;
                     let queryString = "";
                     if (appendMode) {
-                        queryString = `?sort=Date,desc&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
+                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
                         imagesCount += appendCount;
                     } else {
-                        queryString = `?sort=Date,desc&offset=${0}&limit=${imagesCount}`;
+                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}`;
                     }
                     return queryString;
                 }
@@ -313,6 +314,7 @@
                 $(".showMore").off();
                 $(".editCmd").click(e => { editimage(e) });
                 $(".editUserCmd").click(e => { ModifyUser() });
+                $("#sortCmd").click(e => {sortImages()});
                 $(".deleteCmd").click(e => { deleteimage(e) });
 
                 $('[data-toggle="tooltip"]').tooltip();
@@ -527,6 +529,29 @@
                     $("#loginForm")[0].reportValidity()
                 }
                 return false;
+            }
+
+            let asc = true;
+
+            function sortImages()
+            {
+
+                asc = !asc;
+                getImagesList();
+                // console.log("yop");
+                
+
+                //     let queryString = "";
+
+                //         queryString = `?sort=Date,${asc ? "asc" : "desc"}`;
+                //         console.log(queryString);
+                //         //imagesCount += appendCount;
+
+                //         //queryString = `?sort=Date,desc&offset=${0}&limit=${imagesCount}`;
+                    
+                //    // return queryString;
+                
+                // GET_ALL(refreshimagesList, error, queryString);
             }
 
             function userFromModify() {
@@ -843,9 +868,12 @@
                     $("#loggedPanel").show();
                     $("#unloggedPanel").hide();
                 }
+
             }
             function init_Header() {
                 //Image Command Icons
+                $(".editCmd").click(e => { editimage(e) });
+
                 let newImageIcon = $("#newImageCmd");
                 //User 
                 let profileContainer = $("#profileContainer");
