@@ -258,9 +258,8 @@
     "Name": "admin",
     "Email": "admin@yopmail.com",
     "Password": "admin",
-    "AvatarGUID": "74c36b50-7c2d-11ed-b302-5141b18e756a",
-    "Date": 1671077000829,
     "Created": 1671077019,
-    "VerifyCode": 292976
+    "VerifyCode": 292976,
+    "AvatarGUID": "1ef200c0-7cb3-11ed-b597-5356fbbd8deb"
   }
 ]
