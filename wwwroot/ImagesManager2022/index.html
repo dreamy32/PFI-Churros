@@ -216,6 +216,7 @@
 
             init_UI();
             init_Header();
+            $("#sortCmd").click(e => { sortImages() });
             initRegisterDlg();
             initLoginForm();
             initSureDlg();
@@ -314,7 +315,6 @@
                 $(".showMore").off();
                 $(".editCmd").click(e => { editimage(e) });
                 $(".editUserCmd").click(e => { ModifyUser() });
-                $("#sortCmd").click(e => {sortImages()});
                 $(".deleteCmd").click(e => { deleteimage(e) });
 
                 $('[data-toggle="tooltip"]').tooltip();
@@ -533,13 +533,12 @@
 
             let asc = true;
 
-            function sortImages()
-            {
+            function sortImages() {
 
                 asc = !asc;
                 getImagesList();
                 // console.log("yop");
-                
+
 
                 //     let queryString = "";
 
@@ -548,9 +547,9 @@
                 //         //imagesCount += appendCount;
 
                 //         //queryString = `?sort=Date,desc&offset=${0}&limit=${imagesCount}`;
-                    
+
                 //    // return queryString;
-                
+
                 // GET_ALL(refreshimagesList, error, queryString);
             }
 
@@ -654,7 +653,7 @@
                         click: function () {
 
                             DELETE_USER(() => {
-
+                                init_Header();
                                 $(this).dialog("close");
 
                             }, error);

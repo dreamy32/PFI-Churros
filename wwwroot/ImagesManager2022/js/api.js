@@ -66,8 +66,8 @@ function DELETE_USER(successCallBack, errorCallBack) {
     type: "GET",
     headers: getBearerAuthorizationToken(),
     success: () => {
+      deConnect();
       successCallBack();
-      //logout();
     },
     error: function (jqXHR) {
       errorCallBack(jqXHR.status);
