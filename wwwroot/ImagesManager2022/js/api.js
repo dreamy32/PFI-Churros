@@ -3,8 +3,8 @@ const apiImageURL = `${baseUrl}/api/images`;
 const apiAccountsURL = `${baseUrl}/accounts`;
 const apiTokenURL = `${baseUrl}/token`;
 //Storage Keys
-const accessTokenKey = 'access_Token';
-const userKey = 'user';
+const accessTokenKey = "access_Token";
+const userKey = "user";
 //
 function HEAD(successCallBack, errorCallBack) {
   $.ajax({
@@ -60,9 +60,24 @@ function DELETE(id, successCallBack, errorCallBack) {
     },
   });
 }
+function DELETE_USER(errorCallBack) {
+  $.ajax({
+    url: apiAccountsURL + "/remove/" + retrieveLoggedUser().Id,
+    type: "GET",
+    headers: getBearerAuthorizationToken(),
+    success: () => {
+      //logout();
+    },
+    error: function (jqXHR) {
+      errorCallBack(jqXHR.status);
+    },
+  });
+}
 //#region Local Storage utilities functions
 function getStorageType() {
-  return localStorage.getItem("rememberUser") === 'true' ? localStorage : sessionStorage;
+  return localStorage.getItem("rememberUser") === "true"
+    ? localStorage
+    : sessionStorage;
 }
 function tokenRequestURL() {
   return apiTokenURL;
@@ -77,7 +92,7 @@ function retrieveAccessToken() {
   return getStorageType().getItem(accessTokenKey);
 }
 function getBearerAuthorizationToken() {
-  return { 'Authorization': `Bearer ${retrieveAccessToken()}` };
+  return { Authorization: `Bearer ${retrieveAccessToken()}` };
 }
 function storeLoggedUser(user) {
   getStorageType().setItem(userKey, JSON.stringify(user));
@@ -140,12 +155,21 @@ function POST_LOGIN(Email, Password, successCallBack, errorCallBack) {
 
 function GET_VERIFY(code, successCallBack, errorCallBack) {
   $.ajax({
-    url: apiAccountsURL + "/verify?id=" + retrieveLoggedUser().Id + "&code=" + code,
+    url:
+      apiAccountsURL +
+      "/verify?id=" +
+      retrieveLoggedUser().Id +
+      "&code=" +
+      code,
     type: "GET", //,
     //contentType: 'application/json',
     data: {},
-    success: () => { successCallBack() },
-    error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    success: () => {
+      successCallBack();
+    },
+    error: function (jqXHR) {
+      errorCallBack(jqXHR.status);
+    },
   });
 }
 function GET_UserInfo(userId, successCallBack, errorCallBack) {

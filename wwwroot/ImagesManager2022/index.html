@@ -347,6 +347,7 @@
         }
 
         function Register() {
+            $("#deleteAccountBtn").hide();
             holdCheckETag = true;
             createMode = true;
             resetRegisterForm();
@@ -548,7 +549,16 @@
                 minHeight: 780,
                 maxHeight: 780,
                 position: { my: "top", at: "top", of: window },
-                buttons: [{
+                buttons: [
+                {
+                    id:"deleteAccountBtn",
+                    text: "Désinscrire",
+                    
+                    click: function () {
+                        DELETE_USER(error);
+                        }
+                },
+                {
                     id: "registerDlgOkBtn",
                     text: "Title will be changed dynamically",
                     click: function () {
@@ -556,6 +566,7 @@
                         //console.log(user.Id);
                         if (createMode)
                         {
+                            
                             if (user)
                             {
                                 POST_REGISTER(user, getUsersList, error);
