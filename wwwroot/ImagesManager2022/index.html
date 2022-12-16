@@ -263,7 +263,12 @@
             init_Header();
             $("#sortCmd").click(e => { sortImages() });
             $("#toggleSearchCmd").click(() => {
-                $("#search-group").slideToggle(200, getImagesList);
+
+                $("#search-group").slideToggle(200, () => {
+                    getImagesList();
+                    let toggleClass = $("#search-group").is(":visible") ? "fa-magnifying-glass-minus" : "fa-magnifying-glass-plus";
+                    $("#toggleSearchCmd").removeClass().addClass(`cmd fa ${toggleClass}`);
+                });
             });
             $("#searchCmd").click(() => {
                 let keywordHistory = localStorage.getItem("keyword history");
