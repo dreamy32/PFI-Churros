@@ -367,7 +367,7 @@
                                                 style="background-image:url('${image.ThumbnailURL}')">
                                         </div>
                                     </a>                                                                                                         
-                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${retrieveLoggedUser() == null ? "autre usager" : image.Shared && image.UserId != retrieveLoggedUser().Id ? "autre usager" : image.Shared && image.UserId == retrieveLoggedUser().Id ? "images/shared.png" : "" }>
+                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${retrieveLoggedUser() == null ? "" : image.Shared && image.UserId != retrieveLoggedUser().Id ? "" : image.Shared && image.UserId == retrieveLoggedUser().Id ? "images/shared.png" : "" }>
                                     <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
                                 </div>
                         `)
@@ -565,6 +565,9 @@
                 //$("#date_input").val(Date.now());
                 $("#title_input").val(image.Title);
                 $("#description_input").val(image.Description);
+                $("#partage").prop('checked', image.Shared);
+
+                $("#partage").val(image.Shared);
                 ImageUploader.setImage('image', image.OriginalURL);
             }
             function resetRegisterForm() {
