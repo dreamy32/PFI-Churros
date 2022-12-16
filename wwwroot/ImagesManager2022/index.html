@@ -361,12 +361,14 @@
                                         <div    class="cmd editCmd  fa fa-pencil-square" 
                                                 imageid="${image.Id}" 
                                                 title="Editer ${image.Title}" 
-                                                data-toggle="tooltip">
+                                                data-toggle="tooltip"
+                                                style='${image.UserId == retrieveLoggedUser().Id ? "" : "display:none;"}'>
                                         </div>
                                         <div    class="cmd deleteCmd fa fa-window-close" 
                                                 imageid="${image.Id}" 
                                                 title="Effacer ${image.Title}" 
-                                                data-toggle="tooltip">
+                                                data-toggle="tooltip"
+                                                style='${image.UserId == retrieveLoggedUser().Id ? "" : "display:none;"}'>
                                         </div>
                                     </div>
                                     <a href="${image.OriginalURL}" target="_blank">
@@ -374,7 +376,7 @@
                                                 style="background-image:url('${image.ThumbnailURL}')">
                                         </div>
                                     </a>                                                                                                         
-                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${retrieveLoggedUser() == null ? "autre usager" : image.Shared && image.UserId != retrieveLoggedUser().Id ? "autre usager" : image.Shared && image.UserId == retrieveLoggedUser().Id ? "images/shared.png" : ""}>
+                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${retrieveLoggedUser() == null ? "" : image.Shared && image.UserId != retrieveLoggedUser().Id ? "" : image.Shared && image.UserId == retrieveLoggedUser().Id ? "images/shared.png" : ""}>
                                     <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
                                 </div>
                         `)
@@ -473,7 +475,7 @@
                 $("#registerDlg").dialog('option', 'title', "Modification de profil");
                 $("#registerDlgOkBtn").text("Modifier");
                 $("#registerDlg").dialog('open');
-
+                $("#avatar_ImageContainer").attr("style", `background-image:url(${retrieveLoggedUser().AvatarURL});; background-position: center center; background-size: contain; background-repeat: no-repeat; flex: 1 1 0%; height: 100%; width: 100%;"`);
 
                 // holdCheckETag = true;
                 // createMode = false;
@@ -571,6 +573,9 @@
                 //$("#date_input").val(Date.now());
                 $("#title_input").val(image.Title);
                 $("#description_input").val(image.Description);
+                $("#partage").prop('checked', image.Shared);
+
+                $("#partage").val(image.Shared);
                 ImageUploader.setImage('image', image.OriginalURL);
             }
             function resetRegisterForm() {
