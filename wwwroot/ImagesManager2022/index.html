@@ -89,13 +89,13 @@
         </div>
         <div id="search-group" class="col-md-4" style="margin: 15px auto;">
             <div class="input-group">
-                <div class="input-group-btn search-panel" data-search="all">
+                <div class="input-group-btn search-panel" data-search="">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span class="search_by">Filter by</span> <span class="caret"></span>
                     </button>
                     <ul id="userSort" class="dropdown-menu" role="menu" style="max-height: 500px; overflow-y: auto;">
-                        <li><a data-search="all">Tous les usagers</a></li>
-                        <li><a data-search="all">Vos images</a></li>
+                        <li><a data-search="">Tous les usagers</a></li>
+                        <li><a id="connectedUserLi" data-search="you">Vos images</a></li>
                         <li class="divider"></li>
 
                     </ul>
@@ -239,19 +239,26 @@
             let previousScrollPosition = 0;
             let appendMode = false;
             let currentUser;
+            let userFilters = [];
+            let m_user = null;
 
-            GET_UsersList((userList) => {
-                let dropdown = $("#userSort");
-                GET_ALL((images) => {
-                    let sharedUsers = userList.filter(user => images.some(image => image.UserId === user.Id));
-                    for (user of sharedUsers) {
-                        let newLiElement = $("<li></li>");
-                        let newAElement = $("<a></a>").text(user.Name).attr("data-search", user.Id);
-                        newLiElement.append(newAElement);
-                        dropdown.append(newLiElement);
-                    }
-                }, error);
-            }, error);
+            let dropdown = $("#userSort");
+            // GET_ALL((images) => {
+            //     let sharedUsers = [];
+            //     for (let image of images) {
+            //         GET_UserInfo(image.UserId, (user) => {
+            //             if (image.Shared) {
+            //                 let newLiElement = $("<li></li>");
+            //                 let newAElement = $("<a></a>").text(user.Name).attr("data-search", user.Id);
+            //                 newLiElement.append(newAElement);
+            //                 dropdown.append(newLiElement);
+            //             }
+            //         }, error)
+            //     }
+            //     init_Filter();
+            // }, error);
+            //
+            init_userFilter();
             init_UI();
             init_Header();
             $("#sortCmd").click(e => { sortImages() });
@@ -316,7 +323,7 @@
                         queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
                         imagesCount += appendCount;
                     } else {
-                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}&Title=${searchBar.val()}`;
+                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}&Title=${searchBar.val()}&UserId=${$('.search-panel').data("search")}`;
                     }
                     return queryString;
                 }
@@ -367,7 +374,7 @@
                                                 style="background-image:url('${image.ThumbnailURL}')">
                                         </div>
                                     </a>                                                                                                         
-                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${retrieveLoggedUser() == null ? "autre usager" : image.Shared && image.UserId != retrieveLoggedUser().Id ? "autre usager" : image.Shared && image.UserId == retrieveLoggedUser().Id ? "images/shared.png" : "" }>
+                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${retrieveLoggedUser() == null ? "autre usager" : image.Shared && image.UserId != retrieveLoggedUser().Id ? "autre usager" : image.Shared && image.UserId == retrieveLoggedUser().Id ? "images/shared.png" : ""}>
                                     <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
                                 </div>
                         `)
@@ -382,15 +389,14 @@
 
                 for (let image of images) {
 
-                    if (retrieveLoggedUser() == null)
-                    {
-                    if (image.Shared){
-                        insertIntoImageList(image);}
+                    if (retrieveLoggedUser() == null) {
+                        if (image.Shared) {
+                            insertIntoImageList(image);
+                        }
                     }
-                    else
-                    {
+                    else {
                         if (image.Shared || image.UserId == retrieveLoggedUser().Id)
-                        insertIntoImageList(image);
+                            insertIntoImageList(image);
                     }
                 }
 
@@ -480,7 +486,7 @@
             }
 
 
-            
+
             function editimage(e) {
                 holdCheckETag = true;
                 createMode = false;
@@ -819,6 +825,8 @@
                     let userInfo = retrieveLoggedUser();
                     if (userInfo) {
                         logout(userInfo.Id, (() => {
+                            init_userFilter();
+                            getImagesList();
                             init_Header();
                             console.log("Disconnected");
                         }), error);
@@ -853,6 +861,8 @@
                                 localStorage.setItem("rememberUser", rememberUser);
                                 //Log user
                                 POST_LOGIN(loginInfo.Email, loginInfo.Password, () => {
+                                    init_userFilter();
+                                    getImagesList();
                                     init_Header();
                                     $(this).dialog("close");
                                 }, error);
@@ -988,9 +998,6 @@
                 let loginIcon = $("#loginCmd");
                 let logoutIcon = $("#logoutCmd");
                 let modifyIcon = $("#modifyCmd");
-                //UserInfo
-                let user = retrieveLoggedUser();
-
                 //Hide Everything on initialization
                 newImageIcon.hide();
                 profileContainer.hide();
@@ -999,28 +1006,64 @@
                 logoutIcon.hide();
                 modifyIcon.hide();
 
+                //UserInfo
+                m_user = retrieveLoggedUser();
                 //Show depending if user info
-                if (user) {
+                if (m_user) {
+                    $("#connectedUserLi").attr("data-search", m_user.Id);
+                    $("#connectedUserLi").show();
                     //Image Command Icon
                     newImageIcon.show();
                     //User Command Icons
                     logoutIcon.show();
                     modifyIcon.show();
                     //Profile Container
-                    username.text(user.Name);
+                    username.text(m_user.Name);
 
-                    let url = user.AvatarURL;
+                    let url = m_user.AvatarURL;
                     if (url !== "" && url !== null && !url.includes("undefined")) {
                         image.attr("src", url);
                     }
                     profileContainer.show();
                 }
                 else {
+                    $("#connectedUserLi").attr("data-search", "");
+                    $("#connectedUserLi").hide();
                     loginIcon.show();
                     registerIcon.show();
                 }
 
 
+            }
+            function init_userFilter() {
+                GET_ALL((images) => {
+                    let promises = [];
+                    if (userFilters.length > 0) {
+                        for (userFilter of userFilters) {
+                            userFilter.remove();
+                        }
+                        userFilters = [];
+                    }
+                    for (let image of images) {
+                        let promise = new Promise((resolve, reject) => {
+                            GET_UserInfo(image.UserId, (user) => {
+                                if (image.Shared) {
+                                    if (m_user == null || m_user.Id != image.UserId) {
+                                        let newLiElement = $("<li></li>");
+                                        let newAElement = $("<a></a>").text(user.Name).attr("data-search", user.Id);
+                                        userFilters.push(newLiElement.append(newAElement));
+                                        dropdown.append(newLiElement);
+                                    }
+                                }
+                                resolve();
+                            }, error)
+                        });
+                        promises.push(promise);
+                    }
+                    Promise.all(promises).then(() => {
+                        init_Filter();
+                    });
+                }, error);
             }
             function init_About() {
                 $("#logo").click(() => {
@@ -1044,25 +1087,23 @@
                         }]
                 });
             }
-        </script>
-        <script>
-            $(document).ready(function (e) {
-                "use strict";
-                $('.search-panel').each(function () {
-                    var to = $(this).data('search').toString();
-                    var text = $(this).find('[data-search="' + to + '"]').html();
-                    $(this).find('button span.search_by').html(text);
-                });
-
+            //SearchBar Filter
+            $('.search-panel').each(function () {
+                var to = $(this).data('search').toString();
+                var text = $(this).find('[data-search="' + to + '"]').html();
+                $(this).find('button span.search_by').html(text);
+            });
+            function init_Filter() {
                 $('.search-panel li a').on('click', function (e) {
                     var sp = $(this).closest('.search-panel');
-                    var to = $(this).html();
+                    var to = $(this).attr("data-search");
                     var text = $(this).html();
                     sp.data('search', to);
                     console.log(sp.find('.search_by'));
                     sp.find('button span.search_by').html(text);
+                    getImagesList();
                 });
-            });
+            }
         </script>
 </body>
 
