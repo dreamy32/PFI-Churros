@@ -324,7 +324,7 @@
                     let searchBar = $("#search-bar");
                     let searchVal = $("#search-group").is(":visible") ? searchBar.val() : "";
                     if (appendMode) {
-                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}&Title=${$("#search-group").is(":visible") ? searchBar.val() : ""}&UserId=${$('.search-panel').data("search")}`;
+                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}&Title=${searchVal}&UserId=${$('.search-panel').data("search")}`;
                         imagesCount += appendCount;
                     } else {
                         queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}&Title=*${searchVal}*&UserId=${$('.search-panel').data("search")}`;
@@ -366,13 +366,13 @@
                                                 imageid="${image.Id}" 
                                                 title="Editer ${image.Title}" 
                                                 data-toggle="tooltip"
-                                                style='${image.UserId == retrieveLoggedUser().Id ? "" : "display:none;"}'>
+                                                style='${m_user != null ? image.UserId == m_user.Id ? "" : "display:none;" : "display:none;"}'>
                                         </div>
                                         <div    class="cmd deleteCmd fa fa-window-close" 
                                                 imageid="${image.Id}" 
                                                 title="Effacer ${image.Title}" 
                                                 data-toggle="tooltip"
-                                                style='${image.UserId == retrieveLoggedUser().Id ? "" : "display:none;"}'>
+                                                style='${m_user != null ? image.UserId == m_user.Id ? "" : "display:none;" : "display:none;"}'>
                                         </div>
                                     </div>
                                     <a href="${image.OriginalURL}" target="_blank">
@@ -845,6 +845,7 @@
                             init_userFilter();
                             getImagesList();
                             init_Header();
+                            m_user = null;
                             console.log("Disconnected");
                         }), error);
                     }
