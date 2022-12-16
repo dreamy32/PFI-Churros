@@ -376,7 +376,7 @@
                                                 style="background-image:url('${image.ThumbnailURL}')">
                                         </div>
                                     </a>                                                                                                         
-                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${retrieveLoggedUser() == null ? "" : image.Shared && image.UserId != retrieveLoggedUser().Id ? "" : image.Shared && image.UserId == retrieveLoggedUser().Id ? "images/shared.png" : ""}>
+                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${m_user == null ? "" : image.Shared && image.UserId != m_user.Id ? "" : image.Shared && image.UserId == m_user.Id ? "images/shared.png" : "images/private.png"}>
                                     <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
                                 </div>
                         `)
