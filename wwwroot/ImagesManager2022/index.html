@@ -375,7 +375,7 @@
                                                 style="background-image:url('${image.ThumbnailURL}')">
                                         </div>
                                     </a>                                                                                                         
-                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${m_user == null ? "" : image.Shared && image.UserId != m_user.Id ? "" : image.Shared && image.UserId == m_user.Id ? "images/shared.png" : "images/private.png"}>
+                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${m_user == null ? "" : image.Shared && image.UserId != m_user.Id ? "" : image.Shared && image.UserId == m_user.Id ? "images/shared.png" : !image.Shared && image.UserId == m_user.Id ? "images/private.png" : ""}>
                                     <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
                                 </div>
                         `)
@@ -505,9 +505,15 @@
                     //createMode = true;
                     //resetRegisterForm();
                     //ImageUploader.imageRequired('image', true);
+                    let user = userRegisterFromForm();
+
+                    if (user)
+                    {
+
                     $("#confirmationDlg").dialog('option', 'title', "Vérification de courriel");
                     $("#confirmationDlgOkBtn").text("Envoyer");
                     $("#confirmationDlg").dialog('open');
+                    }
                 }
             }
             function Login() {
@@ -810,6 +816,8 @@
                                 //parseInt($("#date_input").val());
                                 $(this).dialog("close");
                                 $("#registerDlg").dialog("close");
+                                init_Header();
+                                init_Filter();
 
                             }, error);
 
