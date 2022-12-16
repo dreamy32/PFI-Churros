@@ -173,6 +173,31 @@
             </div>
         </div>
         <div>
+            <div id="infoDlg">
+                <input type="hidden" id="Id_input" value="0">
+                <input type="hidden" id="date_input" value="0">
+                <input type="hidden" id="GUID_input" value="">
+
+                <label for="title_info">Titre</label>
+                <p id="title_info"></p>
+                <label for="desc_info">Description</label>
+                <p id="title_info"></p>
+                <label for="title_info">Date</label>
+                <p id="date_info"></p>
+                <!-- <label for="decription_input">Description</label>
+                <textarea id="description_input" class="form-control" required></textarea>
+
+                <label for="image">Image</label>
+                <div id='image' class='ImageUploader' defaultImage='images/No_Image.png'
+                    waitingImage='images/writing.gif'>
+                </div>
+                <div class="note">Cliquez-Déposez une image</div>
+                <label for="partage">Partager</label>
+                <input type="checkbox" name="partage" id="partage"> -->
+                    
+            </div>
+        </div>
+        <div>
             <div id="loginDlg">
                 <form id="loginForm">
 
@@ -262,6 +287,8 @@
             init_UI();
             init_Header();
             $("#sortCmd").click(e => { sortImages() });
+            $("#infoDlgClk").click(e => {initInfo()});
+
             $("#toggleSearchCmd").click(() => {
 
                 $("#search-group").slideToggle(200, () => {
@@ -315,6 +342,16 @@
                     currentETag = ETag;
                     sortImages();
                 }
+            }
+
+            function initInfo(title,description,date)
+            {
+                $("#title_info").text(title);
+                $("#desc_info").text(description);
+                $("#date_info").text(date);
+                $("infoDlg").dialog('option', 'title', "Infos image");
+                $("#yousureDlgOkBtn").text("Désinscire mon compte");
+                $("#infoDlg").dialog('open');
             }
 
             function getImagesList(refresh = true) {
@@ -375,12 +412,12 @@
                                                 style='${image.UserId == retrieveLoggedUser().Id ? "" : "display:none;"}'>
                                         </div>
                                     </div>
-                                    <a href="${image.OriginalURL}" target="_blank">
-                                        <div    class='image' 
+                                    <input type='button' onclick='initInfo(${image.Title,image.Description,image.Date})' placeholder='infos'>
+                                        <div  id='infoDlgClk'  class='image' 
                                                 style="background-image:url('${image.ThumbnailURL}')">
                                         </div>
-                                    </a>                                                                                                         
-                                    <img style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${m_user == null ? "" : image.Shared && image.UserId != m_user.Id ? "" : image.Shared && image.UserId == m_user.Id ? "images/shared.png" : !image.Shared && image.UserId == m_user.Id ? "images/private.png" : ""}>
+                                    </input>                                                                                                         
+                                    <img id='infoDlgClk' style='width:50px;heigth:50px; position:relative; top:-200px; left:10px' src=${m_user == null ? "" : image.Shared && image.UserId != m_user.Id ? "" : image.Shared && image.UserId == m_user.Id ? "images/shared.png" : !image.Shared && image.UserId == m_user.Id ? "images/private.png" : ""}>
                                     <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
                                 </div>
                         `)
@@ -962,6 +999,25 @@
                     },
                     {
                         text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            imageIdToDelete = 0;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+                $("#infoDlg").dialog({
+                    title: "Attention!",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 500, minWidth: 500, maxWidth: 500,
+                    height: 230, minHeight: 230, maxHeight: 230,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [
+                    {
+                        text: "Fermer",
                         click: function () {
                             holdCheckETag = false;
                             imageIdToDelete = 0;
