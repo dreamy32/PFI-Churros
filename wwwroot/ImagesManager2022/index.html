@@ -469,7 +469,7 @@
                 $("#registerDlg").dialog('option', 'title', "Modification de profil");
                 $("#registerDlgOkBtn").text("Modifier");
                 $("#registerDlg").dialog('open');
-
+                $("#avatar_ImageContainer").attr("style",`background-image:url(${retrieveLoggedUser().AvatarURL});; background-position: center center; background-size: contain; background-repeat: no-repeat; flex: 1 1 0%; height: 100%; width: 100%;"`);
 
                 // holdCheckETag = true;
                 // createMode = false;
