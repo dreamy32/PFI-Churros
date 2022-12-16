@@ -354,12 +354,14 @@
                                         <div    class="cmd editCmd  fa fa-pencil-square" 
                                                 imageid="${image.Id}" 
                                                 title="Editer ${image.Title}" 
-                                                data-toggle="tooltip">
+                                                data-toggle="tooltip"
+                                                style='${image.UserId == retrieveLoggedUser().Id ? "" : "display:none;"}'>
                                         </div>
                                         <div    class="cmd deleteCmd fa fa-window-close" 
                                                 imageid="${image.Id}" 
                                                 title="Effacer ${image.Title}" 
-                                                data-toggle="tooltip">
+                                                data-toggle="tooltip"
+                                                style='${image.UserId == retrieveLoggedUser().Id ? "" : "display:none;"}'>
                                         </div>
                                     </div>
                                     <a href="${image.OriginalURL}" target="_blank">
