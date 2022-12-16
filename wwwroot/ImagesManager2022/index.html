@@ -241,7 +241,6 @@
             let currentUser;
             let userFilters = [];
             let m_user = null;
-            let m_refresh = false;
             let dropdown = $("#userSort");
             // GET_ALL((images) => {
             //     let sharedUsers = [];
@@ -323,11 +322,12 @@
                     //queryString = `?sort=Date,${asc ? "asc" : "desc"}`;
                     let queryString = "";
                     let searchBar = $("#search-bar");
+                    let searchVal = $("#search-group").is(":visible") ? searchBar.val() : "";
                     if (appendMode) {
                         queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}&Title=${$("#search-group").is(":visible") ? searchBar.val() : ""}&UserId=${$('.search-panel').data("search")}`;
                         imagesCount += appendCount;
                     } else {
-                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}&Title=${$("#search-group").is(":visible") ? searchBar.val() : ""}&UserId=${$('.search-panel').data("search")}`;
+                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}&Title=*${searchVal}*&UserId=${$('.search-panel').data("search")}`;
                     }
                     return queryString;
                 }
@@ -814,7 +814,6 @@
                                 // login
                                 //parseInt($("#date_input").val());
                                 $(this).dialog("close");
-                                $("#registerDlg").dialog("close");
 
                             }, error);
 
