@@ -241,7 +241,7 @@
             let currentUser;
             let userFilters = [];
             let m_user = null;
-
+            let m_refresh = false;
             let dropdown = $("#userSort");
             // GET_ALL((images) => {
             //     let sharedUsers = [];
@@ -263,7 +263,7 @@
             init_Header();
             $("#sortCmd").click(e => { sortImages() });
             $("#toggleSearchCmd").click(() => {
-                $("#search-group").slideToggle(200);
+                $("#search-group").slideToggle(200, getImagesList);
             });
             $("#searchCmd").click(() => {
                 let keywordHistory = localStorage.getItem("keyword history");
@@ -279,10 +279,9 @@
                     else {
                         localStorage.setItem("keyword history", JSON.stringify([searchBar.val()]))
                     }
-                    init_searchDataList();
-                    getImagesList();
                 }
-                getImagesList(true);
+                init_searchDataList();
+                getImagesList();
             })
             function init_searchDataList() {
                 let keywordHistory = localStorage.getItem("keyword history");
@@ -320,10 +319,10 @@
                     let queryString = "";
                     let searchBar = $("#search-bar");
                     if (appendMode) {
-                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
+                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}&Title=${$("#search-group").is(":visible") ? searchBar.val() : ""}&UserId=${$('.search-panel').data("search")}`;
                         imagesCount += appendCount;
                     } else {
-                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}&Title=${searchBar.val()}&UserId=${$('.search-panel').data("search")}`;
+                        queryString = `?sort=Date,${asc ? "asc" : "desc"}&offset=${0}&limit=${imagesCount}&Title=${$("#search-group").is(":visible") ? searchBar.val() : ""}&UserId=${$('.search-panel').data("search")}`;
                     }
                     return queryString;
                 }
